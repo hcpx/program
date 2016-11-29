@@ -1,0 +1,612 @@
+package com.scchuangtou.dao;
+
+import java.nio.charset.Charset;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.alibaba.fastjson.JSON;
+import com.scchuangtou.config.AdminConfig;
+import com.scchuangtou.config.Config;
+import com.scchuangtou.config.MessageConfig;
+import com.scchuangtou.config.UserConfig;
+import com.scchuangtou.entity.AdminActionIdentificationReqEntity;
+import com.scchuangtou.entity.AdminAddArticleReqEntity;
+import com.scchuangtou.entity.AdminAddChildReqEntity;
+import com.scchuangtou.entity.AdminGetArticlesReqEntity;
+import com.scchuangtou.entity.AdminGetArticlesResEntity;
+import com.scchuangtou.entity.AdminHomepageDataReqEntity;
+import com.scchuangtou.entity.AdminHomepageDataResEntity;
+import com.scchuangtou.entity.AdminLoginResEntity;
+import com.scchuangtou.entity.AdminManagerArticleReqEntity;
+import com.scchuangtou.entity.BaseArticleResEntity;
+import com.scchuangtou.entity.BaseResEntity;
+import com.scchuangtou.entity.EditChildAdminReqEntity;
+import com.scchuangtou.entity.EditChildAdminResEntity;
+import com.scchuangtou.entity.ListChildAdminReqEntity;
+import com.scchuangtou.entity.ListChildAdminResEntity;
+import com.scchuangtou.entity.UpdateAdminInfoReqEntity;
+import com.scchuangtou.entity.UpdateAdminInfoResEntity;
+import com.scchuangtou.entity.UpdateAdminPasswordReqEntiy;
+import com.scchuangtou.entity.UpdateAdminPasswordResEntiy;
+import com.scchuangtou.model.AdminInfo;
+import com.scchuangtou.model.AdminModeInfo;
+import com.scchuangtou.model.User;
+import com.scchuangtou.model.UserMessageInfo;
+import com.scchuangtou.task.MessageTask;
+import com.scchuangtou.utils.DBUtils;
+import com.scchuangtou.utils.DBUtils.PreparedStatementCache;
+import com.scchuangtou.utils.IdUtils;
+import com.scchuangtou.utils.LogUtils;
+import com.scchuangtou.utils.MD5Utils;
+import com.scchuangtou.utils.StringUtils;
+
+public class AdminDao {
+	public static int ADMIN_STATUS_NORMAL = 1; // 正常状态
+	public static int ADMIN_STATUS_BARRED = -1; // 禁止访问状态
+
+	public static int addAdmin(DBUtils.ConnectionCache conn, AdminInfo mAdminInfo) throws SQLException {
+		HashMap<String, Object> datas = new HashMap<>();
+		datas.put("admin_user", mAdminInfo.admin_user);
+		datas.put("admin_pass",
+				MD5Utils.md5(mAdminInfo.admin_pass.getBytes(Charset.forName(Config.CHARSET)), MD5Utils.MD5Type.MD5_32));
+		datas.put("admin_email", mAdminInfo.admin_email);
+		datas.put("admin_phone", mAdminInfo.admin_phone);
+		datas.put("admin_modes", JSON.toJSONString(mAdminInfo.modes));
+		return DBUtils.insert(conn, "INSERT IGNORE INTO admininfo", datas);
+	}
+
+	public static BaseResEntity addAdminChild(AdminAddChildReqEntity req) throws SQLException {
+		BaseResEntity res = new BaseResEntity();
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, req.admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!adminInfo.hasMode(AdminConfig.MODE_MANAGER_CHILD_ADMIN)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			for (String mode : req.modes) {
+				if (!adminInfo.hasMode(mode)) {
+					res.status = Config.STATUS_PERMISSION_ERROR;
+					return res;
+				}
+			}
+			AdminInfo mAdminInfo = new AdminInfo();
+			mAdminInfo.admin_user = req.user_name;
+			mAdminInfo.admin_phone = req.phone_number;
+			mAdminInfo.admin_email = req.email;
+			mAdminInfo.admin_pass = req.password;
+			mAdminInfo.modes = req.modes;
+			int row = addAdmin(conn, mAdminInfo);
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+				return res;
+			} else {
+				res.status = Config.STATUS_USER_EXITS;
+				return res;
+			}
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static EditChildAdminResEntity editAdmin(EditChildAdminReqEntity req) throws SQLException {
+		if (req.modes != null && req.modes.size() > 0) {
+			for (String mode : req.modes) {
+				if (!AdminConfig.getAdminModes().containsKey(mode)) {
+					return null;
+				}
+			}
+		}
+		EditChildAdminResEntity res = new EditChildAdminResEntity();
+		DBUtils.ConnectionCache conn = null;
+		int row = 0;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, req.admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!adminInfo.hasMode(AdminConfig.MODE_MANAGER_CHILD_ADMIN)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			StringBuffer sb = new StringBuffer("update admininfo set admin_user=?");
+			if (!StringUtils.emptyString(req.password)) {
+				String password = MD5Utils.md5(req.password.getBytes(Charset.forName(Config.CHARSET)),
+						MD5Utils.MD5Type.MD5_32);
+				sb.append(",admin_pass='").append(password).append("'");
+			}
+			if (!StringUtils.emptyString(req.phone_number)) {
+				sb.append(",admin_phone='").append(req.phone_number).append("'");
+			}
+			if (!StringUtils.emptyString(req.email)) {
+				sb.append(",admin_email='").append(req.email).append("'");
+			}
+			if (req.modes != null && req.modes.size() > 0) {
+				sb.append(",admin_modes='").append(JSON.toJSONString(req.modes)).append("'");
+			}
+			if (req.status != 0) {
+				sb.append(",status=").append(req.status);
+			}
+			sb.append(" where admin_user=?");
+
+			row = DBUtils.executeUpdate(conn, sb.toString(), new Object[] { req.user_name, req.user_name });
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+			} else {
+				res.status = Config.STATUS_NOT_EXITS;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static ListChildAdminResEntity listChildAdmin(ListChildAdminReqEntity req) throws SQLException {
+		ListChildAdminResEntity res = new ListChildAdminResEntity();
+
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+
+			AdminInfo adminInfo = getAdminByToken(conn, req.admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!adminInfo.hasMode(AdminConfig.MODE_MANAGER_CHILD_ADMIN)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+
+			StringBuffer sql = new StringBuffer(
+					"SELECT admin_user,admin_email,admin_phone,admin_modes,status FROM admininfo WHERE admin_user<>? ");
+			if (!StringUtils.emptyString(req.key_word)) {
+				sql.append(" AND admin_user like '%").append(req.key_word).append("%'");
+			}
+			sql.append(" ORDER BY admin_user DESC LIMIT ?,?");
+			pstat = conn.prepareStatement(sql.toString());
+			pstat.setObject(1, AdminConfig.USER_NAME);
+			pstat.setObject(2, req.begin);
+			pstat.setObject(3, Config.ONCE_QUERY_COUNT);
+			rs = pstat.executeQuery();
+
+			res.datas = new ArrayList<>();
+			while (rs.next()) {
+				ListChildAdminResEntity.Data mAdminInfo = new ListChildAdminResEntity.Data();
+				mAdminInfo.user_name = rs.getString("admin_user");
+				mAdminInfo.phone_number = rs.getString("admin_phone");
+				mAdminInfo.email = rs.getString("admin_email");
+				String modesStr = rs.getString("admin_modes");
+				if (!StringUtils.emptyString(modesStr)) {
+					mAdminInfo.modes = JSON.parseArray(modesStr, String.class);
+				}
+				mAdminInfo.status = rs.getInt("status");
+				res.datas.add(mAdminInfo);
+			}
+			res.status = Config.STATUS_OK;
+			res.has_more_data = res.datas.size() >= Config.ONCE_QUERY_COUNT;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+		return res;
+	}
+
+	public static AdminLoginResEntity login(String username, String pass) throws SQLException {
+		String password = MD5Utils.md5(pass.getBytes(Charset.forName(Config.CHARSET)), MD5Utils.MD5Type.MD5_32);
+		String token;
+		if (Config.BACKGROUND_IS_SINGLE_LOGIN) {
+			token = IdUtils.createId(username);
+		} else {
+			token = username + "4ab69ba28616e75b";
+		}
+
+		AdminLoginResEntity res = new AdminLoginResEntity();
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			int row = DBUtils.executeUpdate(conn, "UPDATE admininfo SET token=? WHERE admin_user=? AND admin_pass=?",
+					new Object[] { token, username, password });
+
+			if (row > 0) {
+				String sql = "SELECT admin_email,admin_phone,token,admin_modes FROM admininfo WHERE admin_user=? AND admin_pass=? AND status=?";
+				pstat = conn.prepareStatement(sql);
+				pstat.setObject(1, username);
+				pstat.setObject(2, password);
+				pstat.setObject(3, ADMIN_STATUS_NORMAL);
+				rs = pstat.executeQuery();
+
+				if (rs.next()) {
+					res.status = Config.STATUS_OK;
+					res.admin_token = rs.getString("token");
+					res.username = username;
+					res.admin_email = rs.getString("admin_email");
+					res.admin_phone = rs.getString("admin_phone");
+					String modesStr = rs.getString("admin_modes");
+					if (!StringUtils.emptyString(modesStr)) {
+						List<String> modes = JSON.parseArray(modesStr, String.class);
+						res.modes = new ArrayList<>();
+						for (String mode : modes) {
+							AdminModeInfo modeInfo = new AdminModeInfo();
+							modeInfo.name = mode;
+							modeInfo.uri = AdminConfig.getAdminModes().get(mode);
+							res.modes.add(modeInfo);
+						}
+					}
+				}
+			}
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+		if (StringUtils.emptyString(res.status)) {
+			res.status = Config.STATUS_PASSWORD_ERROR;
+		}
+		return res;
+	}
+
+	public static AdminInfo getAdminByToken(DBUtils.ConnectionCache conn, String token) throws SQLException {
+		AdminInfo mAdminInfo = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT admin_user,admin_email,admin_phone,admin_pass,admin_modes,status FROM admininfo WHERE token=? AND status=?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setObject(1, token);
+			pstat.setObject(2, ADMIN_STATUS_NORMAL);
+			rs = pstat.executeQuery();
+
+			if (rs.next()) {
+				mAdminInfo = new AdminInfo();
+				mAdminInfo.admin_user = rs.getString("admin_user");
+				mAdminInfo.admin_email = rs.getString("admin_email");
+				mAdminInfo.admin_phone = rs.getString("admin_phone");
+				mAdminInfo.admin_pass = rs.getString("admin_pass");
+				mAdminInfo.status = rs.getInt("status");
+				String modesStr = rs.getString("admin_modes");
+				if (!StringUtils.emptyString(modesStr)) {
+					mAdminInfo.modes = JSON.parseArray(modesStr, String.class);
+				}
+			}
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+		}
+		return mAdminInfo;
+	}
+
+	/**
+	 * 更新管理员密码
+	 *
+	 * @throws SQLException
+	 ***/
+	public static UpdateAdminPasswordResEntiy updateAdminPassword(UpdateAdminPasswordReqEntiy req,String admin_token) throws SQLException {
+		UpdateAdminPasswordResEntiy adminRes = new UpdateAdminPasswordResEntiy();
+		DBUtils.ConnectionCache conn = null;
+		int row = 0;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, admin_token);
+			if (adminInfo == null) {
+				adminRes.status = Config.STATUS_TOKEN_ERROR;
+				return adminRes;
+			}
+			String oldPassword = MD5Utils.md5(req.password.getBytes(Charset.forName(Config.CHARSET)),
+					MD5Utils.MD5Type.MD5_32);
+			if (!oldPassword.equals(adminInfo.admin_pass)) {
+				adminRes.status = Config.STATUS_PASSWORD_ERROR;
+				return adminRes;
+			}
+			String password = MD5Utils.md5(req.new_password.getBytes(Charset.forName(Config.CHARSET)),
+					MD5Utils.MD5Type.MD5_32);
+			String sql = "UPDATE admininfo SET admin_pass=? WHERE admin_user=?";
+			row = DBUtils.executeUpdate(conn, sql, new Object[] { password, adminInfo.admin_user });
+			if (row > 0) {
+				adminRes.status = Config.STATUS_OK;
+				return adminRes;
+			} else {
+				adminRes.status = Config.STATUS_SERVER_ERROR;
+				return adminRes;
+			}
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	/***
+	 * 更新管理员信息
+	 *
+	 * @throws SQLException
+	 ****/
+	public static UpdateAdminInfoResEntity updateAdminInfo(UpdateAdminInfoReqEntity req,String admin_token) throws SQLException {
+		UpdateAdminInfoResEntity res = new UpdateAdminInfoResEntity();
+		DBUtils.ConnectionCache conn = null;
+		int row = 0;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			String sql = "update admininfo set admin_email=?,admin_phone=? WHERE admin_user=?";
+			row = DBUtils.executeUpdate(conn, sql,
+					new Object[] { req.admin_email, req.admin_phone, adminInfo.admin_user });
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+				return res;
+			} else {
+				res.status = Config.STATUS_SERVER_ERROR;
+				return res;
+			}
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static AdminGetArticlesResEntity getArticles(AdminGetArticlesReqEntity req, HttpServletRequest request,
+			String token) throws Exception {
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo mAdminInfo = getAdminByToken(conn, token);
+			if (mAdminInfo == null) {
+				AdminGetArticlesResEntity res = new AdminGetArticlesResEntity();
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!mAdminInfo.hasMode(AdminConfig.MODE_MANAGER_ARTICLE)) {
+				AdminGetArticlesResEntity res = new AdminGetArticlesResEntity();
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+
+			StringBuffer sb = new StringBuffer();
+			sb.append(
+					"select a.article_title,a.article_id,a.article_content,a.article_publish_time,a.article_type,a.article_label,a.user_id,a.article_status,article_comment_num,article_browse_num,a.article_praise_num,a.article_status");
+			sb.append(" FROM article a WHERE a.delete_time =").append(ArticleDao.ARTICLE_DELTE_TIME_NORMAL);
+			if (!StringUtils.emptyString(req.user_id)) {
+				sb.append(" AND a.user_id ='").append(req.user_id).append("'");
+			}
+			if (!StringUtils.emptyString(req.keyword)) {
+				sb.append(" AND a.article_title like '%").append(req.keyword).append("%'");
+			}
+			sb.append(" ORDER BY a.article_publish_time DESC");
+			sb.append(" LIMIT ").append(req.begin).append(",").append(Config.ONCE_QUERY_COUNT);
+			pstat = conn.prepareStatement(sb.toString());
+			rs = pstat.executeQuery();
+
+			AdminGetArticlesResEntity res = new AdminGetArticlesResEntity();
+			res.article = new ArrayList<>();
+
+			AdminGetArticlesResEntity.Info info;
+			while (rs.next()) {
+				info = new AdminGetArticlesResEntity.Info();
+				String article_id = rs.getString("article_id");
+				info.article_id = article_id;
+				info.article_title = rs.getString("article_title");
+				info.article_content = rs.getString("article_content");
+				info.article_time = rs.getLong("article_publish_time");
+				String article_type = rs.getString("article_type");
+				if (!StringUtils.emptyString(article_type))
+					info.article_type = JSON.parseArray(article_type, String.class);
+				String article_label = rs.getString("article_label");
+				if (!StringUtils.emptyString(article_label))
+					info.article_label = JSON.parseArray(article_label, String.class);
+				info.comment_num = rs.getLong("article_comment_num");
+				info.view_count = rs.getLong("article_browse_num");
+				info.article_praise_num = rs.getLong("article_praise_num");
+				info.article_status = rs.getInt("article_status");
+				res.article.add(info);
+			}
+			res.status = Config.STATUS_OK;
+			res.has_more_data = res.article.size() >= Config.ONCE_QUERY_COUNT;
+			return res;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+	}
+
+	public static BaseResEntity managerArticle(AdminManagerArticleReqEntity req, String token) throws SQLException {
+		int status;
+		if (req.action == -1) {
+			status = ArticleDao.ARTICLE_STATUS_BARRED;
+		} else if (req.action == 1) {
+			status = ArticleDao.ARTICLE_STATUS_NORMAL;
+		} else {
+			return null;
+		}
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo mAdminInfo = getAdminByToken(conn, token);
+			if (mAdminInfo == null) {
+				BaseResEntity res = new BaseResEntity();
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!mAdminInfo.hasMode(AdminConfig.MODE_MANAGER_ARTICLE)) {
+				BaseResEntity res = new BaseResEntity();
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			String sql = "UPDATE article SET article.article_status=? WHERE article.article_id=? AND article.delete_time=?";
+			int row = DBUtils.executeUpdate(conn, sql,
+					new Object[] { status, req.article_id, ArticleDao.ARTICLE_DELTE_TIME_NORMAL });
+			if (row > 0) {
+				BaseResEntity res = new BaseResEntity();
+				res.status = Config.STATUS_OK;
+				return res;
+			} else {
+				BaseResEntity res = new BaseResEntity();
+				res.status = Config.STATUS_NOT_EXITS;
+				return res;
+			}
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	private static MessageTask.MessageParam actionIdentificationNotify(DBUtils.ConnectionCache conn, User user,
+			String faildMsg) throws SQLException {
+		UserMessageInfo mUserMessageInfo = new UserMessageInfo();
+		mUserMessageInfo.message_user = user.user_id;
+		if (StringUtils.emptyString(faildMsg)) {
+			mUserMessageInfo.message_content = "认证申请已审核通过";
+			mUserMessageInfo.message_type = Config.MessageType.MESSAGE_TYPE_USER_CERTIFICATION_PASS;
+		} else {
+			mUserMessageInfo.message_type = Config.MessageType.MESSAGE_TYPE_USER_CERTIFICATION_NO_PASS;
+			mUserMessageInfo.message_content = faildMsg;
+		}
+
+		String messageId = UserMessageDao.addUserMessage(conn, mUserMessageInfo);
+		if (!StringUtils.emptyString(messageId)) {
+			MessageTask.MessageOs os = MessageTask.getOs(user.os);
+			MessageTask.MessageParam mMessageParam = new MessageTask.MessageParam(os, mUserMessageInfo.message_type,
+					messageId);
+			mMessageParam.addAlias(mUserMessageInfo.message_user);
+			mMessageParam.title = MessageConfig.TITLE;
+			mMessageParam.description = MessageConfig.getMessageDescription(mUserMessageInfo, null);
+			return mMessageParam;
+		}
+		return null;
+	}
+
+	public static BaseResEntity actionIdentification(AdminActionIdentificationReqEntity req) throws SQLException {
+		BaseResEntity res = new BaseResEntity();
+
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, req.admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!adminInfo.hasMode(AdminConfig.MODE_MANAGER_IDENTIFICATION)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+
+			User user = UserDao.getUser(conn, req.user_id);
+			if (user == null) {
+				res.status = Config.STATUS_NOT_EXITS;
+				return res;
+			}
+			int ntype;
+			if (StringUtils.emptyString(req.failure_causes)) {
+				ntype = Config.CertificationStauts.CERTIFICATION_STATUS_PASS;
+			} else {
+				ntype = Config.CertificationStauts.CERTIFICATION_STATUS_NO_PASS;
+			}
+			int row = 0;
+			DBUtils.beginTransaction(conn);
+			try {
+				String sql = "update identification set failure_causes=? where user_id=?";
+				row = DBUtils.executeUpdate(conn, sql, new Object[] { req.failure_causes, user.user_id });
+				if (row > 0) {
+					sql = "UPDATE userinfo SET certification=? WHERE user_id=? and certification=?";
+					row = DBUtils.executeUpdate(conn, sql, new Object[] { ntype, user.user_id,
+							Config.CertificationStauts.CERTIFICATION_STATUS_AUDIT });
+				} else {
+					res.status = Config.STATUS_NOT_EXITS;
+				}
+				if (row > 0) {
+					MessageTask.MessageParam mMessageParam = actionIdentificationNotify(conn, user, req.failure_causes);
+					if (mMessageParam == null) {
+						row = 0;
+					} else {
+						DBUtils.commitTransaction(conn);
+						MessageTask.addMessage(mMessageParam);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_SERVER_ERROR;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static BaseArticleResEntity addArticle(AdminAddArticleReqEntity req, HttpServletRequest request,
+			String admin_token) throws Exception {
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, admin_token);
+			if (adminInfo == null) {
+				BaseArticleResEntity res = new BaseArticleResEntity();
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!adminInfo.hasMode(AdminConfig.MODE_MANAGER_ARTICLE)) {
+				BaseArticleResEntity res = new BaseArticleResEntity();
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			return ArticleDao.addArticle(conn, UserConfig.USER_ID, adminInfo.admin_user, req, request);
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+	
+	public static AdminHomepageDataResEntity getCommonData(AdminHomepageDataReqEntity req) throws SQLException {
+		AdminHomepageDataResEntity res = new AdminHomepageDataResEntity();
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo adminInfo = getAdminByToken(conn, req.admin_token);
+			if (adminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			
+			res.all_user=UserDao.getUsersCount(conn);
+			res.one_week_login=UserDao.getUsersOneWeekCount(conn);
+			
+			HealthProjectDao.getHealthProjectTotalGold(conn, res);
+			
+			res.status = Config.STATUS_OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+		return res;
+	}
+}

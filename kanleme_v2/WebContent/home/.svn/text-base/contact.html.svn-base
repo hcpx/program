@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="description" content="国立看了么是一个真实可靠的网络互助平台。看了么健康互助计划是由看了么公益基金发起的，为弱势群体定制的专属保障方案。在这里，人们守望互助，共同抵御重大疾病、癌症的风险。" />
+<meta name="keywords" content="看了么官网,国立看了么,看了么，国立看了么，健康互助，网络互助,互助平台,互助组织"/>
+<title>国立看了么</title>
+<link href="css/kanleme_web.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+<!--top-->
+<div class="top">
+	<div class="topc clearfix">
+    	<a href="../index.html" class="topc_logo fl">
+        	<img src="images/logo.png" />
+            <span>国立看了么</span>
+        </a>
+        <div class="fr topc_list">
+        	<a href="../index.html">首页</a>
+            <a href="healthHelp.jsp">健康互助</a>
+            <a href="appDownload.html">APP下载</a>
+            <a href="helpCentre.html">帮助中心</a>
+            <a class="active" href="contact.html">联系我们</a>
+        </div>
+    </div>
+</div>
+<div class="contact_top"></div>
+<!--联系我们-->
+<div class="conta">
+	<div class="contac">
+    	<div class="repoc_top">
+            <h1 class="repoc_toph1">联系我们</h1>
+            <p class="repoc_topp">MEDIA COVERAGE</p>
+            <span class="repoc_tops"></span>
+        </div>
+        <div class="contacul_wrap">
+        <ul class="contacul clearfix">
+        	<li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="images/con_01.png" />
+                <p class="contaculp1">公司地址</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">成都市武侯区小天竺街75号财富国际16F</p>
+            </li>
+            <li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="images/con_02.png" />
+                <p class="contaculp1">联系方式</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">028-85590791(周一至周日9:00—17:30)</p>
+            </li>
+            <li class="fr">
+            	<img class="contaculimg" src="images/con_03.png" />
+                <p class="contaculp1">电子邮件</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">2597420394@qq.com</p>
+            </li>
+        </ul>
+        </div>
+    </div>
+</div>
+<!--foot-->
+<div class="foot">
+	<div class="footc clearfix">
+    	<ul class="footclist clearfix fl">
+        	<li class="fl">
+            	<h1>关于看了么</h1>
+                <a href="../index.html">国立看了么介绍</a>
+                <a href="healthHelp.jsp">健康互助</a>
+            </li>
+            <li class="fl">
+            	<h1>用户服务</h1>
+                <a href="helpCentre.html">帮助中心</a>
+                <a href="member_action_term.html">会员公约</a>
+                <a href="secret_term.html">隐私条款</a>
+            </li>
+            <li class="fl">
+            	<h1>关注我们</h1>
+                <a target="_blank" href="http://weibo.com/scchuangtou?refer_flag=1001030102_&is_hot=1">新浪微博</a>
+                <a href="showProjectState.html">项目动态</a>
+            </li>
+        </ul>
+        <ul class="footclist2 fr">
+        	<li class="fl">
+            	<img src="images/life_code.jpg" />
+                <span>看了么优生活<br />(订阅号)</span>
+            </li>
+            <li class="fl">
+            	<img src="images/wei_code.jpg" />
+                <span>看了么公益<br />(服务号)</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--bottom-->
+<div class="bottom">
+<p>Copyright © 2016-2026 guolichuangtou. All Rights Resreved.</p>
+</div>
+<a class="back-to-top"><img src="images/ic_top.png" /></a>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

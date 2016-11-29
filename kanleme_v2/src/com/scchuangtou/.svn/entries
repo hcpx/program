@@ -1,0 +1,64 @@
+10
+
+dir
+4417
+svn://192.168.2.100/zhongyi/service/kanleme_v2/src/com/scchuangtou
+svn://192.168.2.100/zhongyi
+
+
+
+2016-09-14T10:05:18.845841Z
+4413
+manager
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+fe457f4b-2164-4c29-b7c9-1a2e924bfb8e
+
+api
+dir
+
+config
+dir
+
+dao
+dir
+
+entity
+dir
+
+filter
+dir
+
+helper
+dir
+
+http
+dir
+
+model
+dir
+
+pay
+dir
+
+servlet
+dir
+
+task
+dir
+
+utils
+dir
+

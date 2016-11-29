@@ -1,0 +1,34 @@
+{
+  "menus": [
+  	{
+      "name": "主页",
+      "uri": "/financial/homepage.jsp"
+    },
+    {
+      "name": "个人中心",
+      "child": [
+        {
+          "name": "密码修改",
+          "uri": "/financial/editFinancialPassword.jsp",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "name": "健康互助管理",
+      "uri": "/financial/healthManage.jsp"
+    },
+    {
+      "name": "提现管理",
+      "uri": "/financial/showUserWithdrawals.jsp"
+    },
+    {
+      "name": "充值信息",
+      "uri": "/financial/showTopUpInfo.jsp"
+    },
+    {
+      "name": "红包管理",
+      "uri": "/financial/redEnvelopeList.jsp"
+    }
+  ]
+}

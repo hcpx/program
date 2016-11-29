@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="description" content="国立看了么是一个真实可靠的网络互助平台。看了么健康互助计划是由看了么公益基金发起的，为弱势群体定制的专属保障方案。在这里，人们守望互助，共同抵御重大疾病、癌症的风险。">
+<meta name="keywords" content="看了么官网,国立看了么,看了么，国立看了么，健康互助，网络互助,互助平台,互助组织">
+<title>国立看了么</title>
+<link href="home/css/kanleme_web.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="home/images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+<!--top-->
+<div class="top">
+	<div class="topc clearfix">
+    	<a href="index.html" class="topc_logo fl">
+        	<img src="home/images/logo.png" />
+            <span>国立看了么</span>
+        </a>
+        <div class="fr topc_list">
+        	<a class="active" href="index.html">首页</a>
+            <a href="home/healthHelp.jsp">健康互助</a>
+            <a href="home/appDownload.html">APP下载</a>
+            <a href="home/helpCentre.html">帮助中心</a>
+            <a href="home/contact.html">联系我们</a>
+        </div>
+    </div>
+</div>
+<!--banner-->
+<div class="banner">
+	<div class="bannerc">
+        <div class="banner_title"><img src="home/images/banner_img00.png" /></div>
+        <div class="banner_img"><img src="home/images/banner_img01.png" /></div>
+        <div class="banner_wei">
+            <a class="banner_wei1" href="javascript:;">关注微信公众号</a>
+            <a class="banner_wei2" href="javascript:;">下载APP</a>
+        </div>
+        <div class="banner_weiimg">
+            <a href="javascript:;"><img class="banner_weiimg1" src="home/images/wei_code.jpg" /></a>
+            <a href="javascript:;"><img class="banner_weiimg2" src="home/images/app_code.png" /></a>
+        </div>
+    </div>
+</div>
+<!--app介绍-->
+<div class="intr">
+	<div class="intrc">
+    	<div class="intrctop">
+        	<h1 class="intrctop1">国立看了么</h1>
+            <p class="intrctop2">GUOLIKANLEME</p>
+            <span class="intrctop3"></span>
+            <p class="intrctop4">国立看了么（原看了么）是一款基于社交网络，集信息发布、网络互助、项目管理为一体的公益互助平台。通过与正规公益组织合作，为弱势群体提供尽可能的帮助。你可以在国立看了么上发布或者浏览各种求助帖子，并力所能及的帮助需要帮助的人们，同时你也可以通过"看友圈"参与各种公益志愿者活动，身体力行的参与公益事业。</p>
+        </div>
+        <ul class="intrclist clearfix">
+        	<li class="fl">
+            	<img class="intrclist1" src="home/images/project01.png" />
+                <h2 class="intrclist2">健康互助</h2>
+                <img class="intrclist3" src="home/images/project_dot.png" />
+                <p class="intrclist4">9元投入</p>
+                <p class="intrclist4">30万元大病补助</p>
+            </li>
+            <li class="fl intrclist_te"></li>
+            <li class="fl">
+            	<img class="intrclist1" src="home/images/project02.png" />
+                <h2 class="intrclist2">兴趣交友</h2>
+                <img class="intrclist3" src="home/images/project_dot.png" />
+                <p class="intrclist4">与爱同行</p>
+                <p class="intrclist4">寻找志同道合的小伙伴</p>
+            </li>
+            <li class="fl intrclist_te"></li>
+            <li class="fl">
+            	<img class="intrclist1" src="home/images/project03.png" />
+                <h2 class="intrclist2">邀请有奖</h2>
+                <img class="intrclist3" src="home/images/project_dot.png" />
+                <p class="intrclist4">邀请好友</p>
+                <p class="intrclist4">最高可享3000元现金红包</p>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--中间banner-->
+<div class="cen_banner"><img src="home/images/banner_02.png" /></div>
+<!--健康互助介绍-->
+<div class="heal">
+	<div class="healc clearfix">
+    	<div class="healcz fl">
+        	<h1 class="healcz1">健康互助</h1>
+            <p class="healcz2">HEALTH ASSISTANCE</p>
+            <span class="healcz3"></span>
+            <p class="healcz4">看了么健康互助计划是由看了么公益基金发起的，为弱势群体和公益人定制的专属保障计划，基于国立看了么APP的网络互助新模式，只要预存9元即可加入健康互助计划，一旦某位成员罹患约定的60种重疾，即可享受最高30万健康互助基金。30万健康互助基金由全体会员均摊，加入的人越多，每人分摊得越少。10万人加入，每人仅需分摊3元；100万人加入，每人仅需分摊0.3元。</p>
+        </div>
+        <div class="healcy fr">
+        	<img class="healcyimg" src="home/images/list_img.png" />
+            <span class="healcy1">健康互助</span>
+            <span class="healcy2">成员罹患约定的60种重病</span>
+            <span class="healcy3">最高可获30万保障</span>
+            <span class="healcy4">预存9元</span>
+        </div>
+    </div>
+</div>
+<!--项目动态-->
+<div class="repo">
+	<div class="repoc">
+    	<div class="repoc_top">
+            <h1 class="repoc_toph1">项目动态</h1>
+            <p class="repoc_topp">MEDIA COVERAGE</p>
+            <span class="repoc_tops"></span>
+        </div>
+        <ul class="repocul1 clearfix">
+        	<li class="fl">
+            	<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzI3MDEzMzQzNg==&mid=502982421&idx=1&sn=b2905627587fd70368c21dd71d22e45f&scene=19#wechat_redirect">
+                <div class="repocul1div">
+                	<div style="width:96%; margin:0 auto; overflow:hidden;">
+                	<img class="repocul1img" src="home/images/list_01.png" />
+                    <h2 class="repocul1h2">关于签到、口令红包和看友圈问题</h2>
+                    <h3 class="repocul1h3">2016-08-08</h3>
+                    <p class="repocul1p">经过程序猿们几个月加班加点的奋斗，看了么2.0版本终于姗姗来迟（各大应用市场已上线，搜索“国立看了么”即可下载）。针对各位观众老爷关心的问题，我们</p>
+                    <span class="repocul1a">查看更多...</span>
+                    </div>
+                </div>
+                </a>
+            </li>
+            <li class="fr">
+            	<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzI3MDEzMzQzNg==&mid=502982406&idx=4&sn=34a3bdd11bf80a31365d3a51a1047911&scene=19#wechat_redirect">
+                <div class="repocul1div">
+                	<div style="width:96%; margin:0 auto; overflow:hidden;">
+                    <img class="repocul1img" src="home/images/list_02.png" />
+                    <h2 class="repocul1h2">国立看了么——健康互助计划</h2>
+                    <h3 class="repocul1h3">2016-07-20</h3>
+                    <p class="repocul1p">2015年伊始，网络互助的概念越炒越热，鉴于中国国情，作为一种新时代下的全新模式，网络互助的路走得也更加艰难。在过去的一年里，这种模式常常伴随着各种争</p>
+                    <span class="repocul1a">查看更多...</span>
+                    </div>
+                </div>
+                </a>
+            </li>
+        </ul>       
+        <ul class="repocul2 clearfix">
+        	<li class="fl">
+            	<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzI3MDEzMzQzNg==&mid=502982406&idx=2&sn=7d2c2fca6169141a9f8abd27ce6a82dd&scene=19#wechat_redirect">
+                <div class="repocul1div">
+                <div style="width:96%; margin:0 auto; overflow:hidden;">
+            		<img class="repocul1img" src="home/images/list_03.png" />
+                    <h2 class="repocul1h2">寻找民间公益组织，共同建立....</h2>
+                    <h3 class="repocul1h3">2016-07-20 </h3>
+                    <p class="repocul1p">2013年8月末，专职做公益11年，累计援助1000余名孤儿、留守儿童的广西公益达人“马克”(真名祝启武)突</p>
+                    <span class="repocul1a">查看更多...</span>
+                </div>
+                </div>
+                </a>
+            </li>
+            <li class="fl" style="width:34%">
+            	<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzI3MDEzMzQzNg==&mid=502982406&idx=3&sn=2abaa45cdd5f7c5f6fbc28c9240b4e16&scene=19#wechat_redirect">
+                <div class="repocul1div">
+                <div style="width:96%; margin:0 auto; overflow:hidden;">
+            		<img class="repocul1img" src="home/images/list_04.png" />
+                    <h2 class="repocul1h2">父母应不应该给孩子买保险？</h2>
+                    <h3 class="repocul1h3">2016-07-20</h3>
+                    <p class="repocul1p">对于每一个刚刚来到这个世界的宝宝来说，身边的一切都是充满好奇的，但由于缺乏分辨危险的能力 ，</p>
+                    <span class="repocul1a">查看更多...</span>
+                </div>
+                </div>
+                </a>
+            </li>
+            <li class="fr">
+            	<a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzI3MDEzMzQzNg==&mid=401806305&idx=1&sn=5724fa2ea4b2cb5a30f19a30c765a068&scene=19#wechat_redirect">
+                <div class="repocul1div">
+                	<div style="width:96%; margin:0 auto; overflow:hidden;">
+            		<img class="repocul1img" src="home/images/list_05.png" />
+                    <h2 class="repocul1h2">国立看了么——让每个人有尊严....</h2>
+                    <h3 class="repocul1h3">2016-01-28 </h3>
+                    <p class="repocul1p">看了么新版本已上线，正式更名为国立看了么，各大应用市场搜索“国立看了么”即可下载。</p>
+                    <span class="repocul1a">查看更多...</span>
+                    </div>
+                </div>
+                </a>
+            </li>
+        </ul>
+        <div class="repoc_more"><a href="home/showProjectState.html"><span>更多项目</span><img src="home/images/more_img.png" /></a></div>
+    </div>
+</div>
+<!--联系我们-->
+<div class="conta">
+	<div class="contac">
+    	<div class="repoc_top">
+            <h1 class="repoc_toph1">联系我们</h1>
+            <p class="repoc_topp">MEDIA COVERAGE</p>
+            <span class="repoc_tops"></span>
+        </div>
+        <div class="contacul_wrap">
+        <ul class="contacul clearfix">
+        	<li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="home/images/con_01.png" />
+                <p class="contaculp1">公司地址</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">成都市武侯区小天竺街75号财富国际16F</p>
+            </li>
+            <li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="home/images/con_02.png" />
+                <p class="contaculp1">联系方式</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">028-85590791(周一至周日9:00—17:30)</p>
+            </li>
+            <li class="fr">
+            	<img class="contaculimg" src="home/images/con_03.png" />
+                <p class="contaculp1">电子邮件</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">2597420394@qq.com</p>
+            </li>
+        </ul>
+        </div>
+    </div>
+</div>
+<!--foot-->
+<div class="foot">
+	<div class="footc clearfix">
+    	<ul class="footclist clearfix fl">
+        	<li class="fl">
+            	<h1>关于看了么</h1>
+                <a href="index.html">国立看了么介绍</a>
+                <a href="home/healthHelp.jsp">健康互助</a>
+            </li>
+            <li class="fl">
+            	<h1>用户服务</h1>
+                <a href="home/helpCentre.html">帮助中心</a>
+                <a href="home/member_action_term.html">会员公约</a>
+                <a href="home/secret_term.html">隐私条款</a>
+            </li>
+            <li class="fl">
+            	<h1>关注我们</h1>
+                <a target="_blank" href="http://weibo.com/scchuangtou?refer_flag=1001030102_&is_hot=1">新浪微博</a>
+                <a href="home/showProjectState.html">项目动态</a>
+            </li>
+        </ul>
+        <ul class="footclist2 fr">
+        	<li class="fl">
+            	<img src="home/images/life_code.jpg" />
+                <span>看了么优生活<br />(订阅号)</span>
+            </li>
+            <li class="fl">
+            	<img src="home/images/wei_code.jpg" />
+                <span>看了么公益<br />(服务号)</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--bottom-->
+<div class="bottom">
+<p>Copyright © 2016-2026 guolichuangtou. All Rights Resreved.</p>
+</div>
+<a class="back-to-top"><img src="home/images/ic_top.png" /></a>
+<script type="text/javascript" src="home/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="home/js/base.js"></script>
+</body>
+</html>

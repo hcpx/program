@@ -1,0 +1,77 @@
+10
+
+dir
+4417
+svn://192.168.2.100/zhongyi/service/kanleme_v2/src/com/scchuangtou/api
+svn://192.168.2.100/zhongyi
+
+
+
+2016-09-14T09:25:59.458825Z
+4409
+manager
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+fe457f4b-2164-4c29-b7c9-1a2e924bfb8e
+
+BaseApi.java
+file
+
+
+
+
+2016-09-14T09:47:53.144000Z
+14d6e6747c00fb731bcf4f98c49f1621
+2016-09-14T09:25:59.458825Z
+4409
+manager
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+24809
+
+admin
+dir
+
+app
+dir
+
+communal
+dir
+
+financial
+dir
+
+web
+dir
+

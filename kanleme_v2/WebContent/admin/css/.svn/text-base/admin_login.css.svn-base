@@ -1,0 +1,45 @@
+
+body {
+    background: url("../images/login_background.jpg");
+}
+
+.container {
+    width: 402px;
+    height: 347px;
+    background: #fff;
+    padding: 34px 30px 9px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -250px auto 0 -231px;
+}
+
+.login-nav button {
+    font-size: 18px;
+    color: #A0A0A0;
+    background: #fff;
+    width: 200px;
+    padding: 20px 39px 20px 40px;
+    border: none;
+    float: left;
+}
+
+button.nav-button-hover {
+    color: #62B0EC;
+    padding-top: 15px;
+    border-top: 5px solid #4CB8FB;
+}
+
+button.b-r-line {
+    border-right: 2px solid #F7F7F7;
+}
+
+button.nav-button-no-hover {
+    color: #AFAFAF;
+    padding-top: 18px;
+    border-bottom: 2px solid #F7F7F7;
+}
+
+.login-box {
+    margin-top: 40px;
+}

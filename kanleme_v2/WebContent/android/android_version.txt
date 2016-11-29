@@ -1,0 +1,1 @@
+﻿{"version_code":201,"version_name":"2.0.1","size":5775360,"url":"/android/kanleme.apk","need_notify":true,"version_desc":"用国立看了么,守护幸福健康。版本大更新\r\n1.增加签到看币奖励\r\n2.界面优化\r\n3.内存优化和修复已知Bug"}

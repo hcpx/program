@@ -1,0 +1,449 @@
+package com.scchuangtou.api;
+
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSON;
+import com.scchuangtou.api.admin.AdminActionIdentificationApi;
+import com.scchuangtou.api.admin.AdminAddArticleApi;
+import com.scchuangtou.api.admin.AdminAddBannerApi;
+import com.scchuangtou.api.admin.AdminAddChildApi;
+import com.scchuangtou.api.admin.AdminAddCircleApi;
+import com.scchuangtou.api.admin.AdminAddSubjectApi;
+import com.scchuangtou.api.admin.AdminAddSystemMsgApi;
+import com.scchuangtou.api.admin.AdminDeleteBannerApi;
+import com.scchuangtou.api.admin.AdminDeleteFeedbackApi;
+import com.scchuangtou.api.admin.AdminDeleteSubjectApi;
+import com.scchuangtou.api.admin.AdminDeleteSystemMsgApi;
+import com.scchuangtou.api.admin.AdminEditChildApi;
+import com.scchuangtou.api.admin.AdminEditSystemMsgApi;
+import com.scchuangtou.api.admin.AdminEditUserApi;
+import com.scchuangtou.api.admin.AdminGetArticles;
+import com.scchuangtou.api.admin.AdminGetBananersApi;
+import com.scchuangtou.api.admin.AdminGetCircles;
+import com.scchuangtou.api.admin.AdminGetFeedBackApi;
+import com.scchuangtou.api.admin.AdminGetIdentiicationsApi;
+import com.scchuangtou.api.admin.AdminGetMyArticlesApi;
+import com.scchuangtou.api.admin.AdminGetMyHealthProjectEventsApi;
+import com.scchuangtou.api.admin.AdminGetUsersApi;
+import com.scchuangtou.api.admin.AdminHealthProjectMembersManageApi;
+import com.scchuangtou.api.admin.AdminHomepageDataApi;
+import com.scchuangtou.api.admin.AdminLoginApi;
+import com.scchuangtou.api.admin.AdminManagerArticleApi;
+import com.scchuangtou.api.admin.AdminUsersInfoApi;
+import com.scchuangtou.api.admin.EditAdminInfoApi;
+import com.scchuangtou.api.admin.EditAdminPasswordApi;
+import com.scchuangtou.api.admin.EditCircle;
+import com.scchuangtou.api.admin.ListChildAdminApi;
+import com.scchuangtou.api.app.AddArticleApi;
+import com.scchuangtou.api.app.AddCapitalSourceApi;
+import com.scchuangtou.api.app.AddFeedBackApi;
+import com.scchuangtou.api.app.ApplyForSalveApi;
+import com.scchuangtou.api.app.BindPhoneApi;
+import com.scchuangtou.api.app.CancelCollectApi;
+import com.scchuangtou.api.app.CancelFocusApi;
+import com.scchuangtou.api.app.CancelPraiseApi;
+import com.scchuangtou.api.app.CarouselRedPacketsApi;
+import com.scchuangtou.api.app.CollectApi;
+import com.scchuangtou.api.app.CommentApi;
+import com.scchuangtou.api.app.DeleteActivityApi;
+import com.scchuangtou.api.app.DeleteArticleApi;
+import com.scchuangtou.api.app.DeleteUserMessageApi;
+import com.scchuangtou.api.app.EditIdentificationApi;
+import com.scchuangtou.api.app.EditPasswordApi;
+import com.scchuangtou.api.app.EditUserApi;
+import com.scchuangtou.api.app.ExchangeIntegralApi;
+import com.scchuangtou.api.app.FindPasswordApi;
+import com.scchuangtou.api.app.FindTradePasswordApi;
+import com.scchuangtou.api.app.FinishRedPacketsApi;
+import com.scchuangtou.api.app.FocusApi;
+import com.scchuangtou.api.app.GetActivityDetailApi;
+import com.scchuangtou.api.app.GetActivitysApi;
+import com.scchuangtou.api.app.GetBannersApi;
+import com.scchuangtou.api.app.GetCircleArticlesApi;
+import com.scchuangtou.api.app.GetCircleDetailApi;
+import com.scchuangtou.api.app.GetCircleMembersApi;
+import com.scchuangtou.api.app.GetCirclesApi;
+import com.scchuangtou.api.app.GetCollectActivitysApi;
+import com.scchuangtou.api.app.GetCollectArticlesApi;
+import com.scchuangtou.api.app.GetCommentApi;
+import com.scchuangtou.api.app.GetFriendCountsApi;
+import com.scchuangtou.api.app.GetHealthProjectMembersApi;
+import com.scchuangtou.api.app.GetIdentificationInfoApi;
+import com.scchuangtou.api.app.GetInnerRedPacketsApi;
+import com.scchuangtou.api.app.GetMyActivitysApi;
+import com.scchuangtou.api.app.GetMyArticlesApi;
+import com.scchuangtou.api.app.GetMyCirclesApi;
+import com.scchuangtou.api.app.GetMyGoldInfoApi;
+import com.scchuangtou.api.app.GetNoCircleArticlesApi;
+import com.scchuangtou.api.app.GetParticipationActivitysApi;
+import com.scchuangtou.api.app.GetParticipationArticlesApi;
+import com.scchuangtou.api.app.GetPromoCodeApi;
+import com.scchuangtou.api.app.GetRedPacketsApi;
+import com.scchuangtou.api.app.GetSigninInfoApi;
+import com.scchuangtou.api.app.GetTotalIntegralApi;
+import com.scchuangtou.api.app.GetUserMessageApi;
+import com.scchuangtou.api.app.GetUserProfileApi;
+import com.scchuangtou.api.app.GetWithdrawalsApi;
+import com.scchuangtou.api.app.GrabHealthRedPacketApi;
+import com.scchuangtou.api.app.GrabRedPacketApi;
+import com.scchuangtou.api.app.HealthMemberTopupRecordApi;
+import com.scchuangtou.api.app.HealthProjectIdcarVerifyApi;
+import com.scchuangtou.api.app.HealthProjectMemberTopUpApi;
+import com.scchuangtou.api.app.HealthRedPacketsRecordApi;
+import com.scchuangtou.api.app.IdentificationApi;
+import com.scchuangtou.api.app.JoinCircleApi;
+import com.scchuangtou.api.app.JoinHealthProjectApi;
+import com.scchuangtou.api.app.ListUserMessageApi;
+import com.scchuangtou.api.app.LoginApi;
+import com.scchuangtou.api.app.ParticipateHealthProjectEventApi;
+import com.scchuangtou.api.app.PraiseApi;
+import com.scchuangtou.api.app.PublishActivityApi;
+import com.scchuangtou.api.app.PublishRedPacketApi;
+import com.scchuangtou.api.app.PublishedRedPacketsApi;
+import com.scchuangtou.api.app.QuitCircleApi;
+import com.scchuangtou.api.app.ReceiveRedPacketsApi;
+import com.scchuangtou.api.app.ReportApi;
+import com.scchuangtou.api.app.ReportCommentApi;
+import com.scchuangtou.api.app.SendVerifyCodeApi;
+import com.scchuangtou.api.app.SetTradePasswordApi;
+import com.scchuangtou.api.app.SignInApi;
+import com.scchuangtou.api.app.ThirdAccountBindApi;
+import com.scchuangtou.api.app.ThirdLoginApi;
+import com.scchuangtou.api.app.WithdrawalsApi;
+import com.scchuangtou.api.communal.CheckTopUpApi;
+import com.scchuangtou.api.communal.GetSubjectsApi;
+import com.scchuangtou.api.communal.ListSystemMessageApi;
+import com.scchuangtou.api.communal.RegisterApi;
+import com.scchuangtou.api.communal.TopUpApi;
+import com.scchuangtou.api.financial.AdminGetHealthProjectMembersApi;
+import com.scchuangtou.api.financial.FinancialAddPromoCodeApi;
+import com.scchuangtou.api.financial.FinancialAuditUserWithdrawalsApi;
+import com.scchuangtou.api.financial.FinancialGetGoldInfoApi;
+import com.scchuangtou.api.financial.FinancialGetTopUpInfoApi;
+import com.scchuangtou.api.financial.FinancialGetUserWithdrawalsApi;
+import com.scchuangtou.api.financial.FinancialLoginApi;
+import com.scchuangtou.api.financial.FinancialPublishRedPacketApi;
+import com.scchuangtou.api.financial.FinancialSearchPromoCodesApi;
+import com.scchuangtou.api.financial.FinancialSearchRedPacketsApi;
+import com.scchuangtou.api.financial.FinancialUpdatePasswordApi;
+import com.scchuangtou.api.financial.GetCommonDataApi;
+import com.scchuangtou.api.financial.GetGraphDataApi;
+import com.scchuangtou.api.financial.HealthProjectDetailManageApi;
+import com.scchuangtou.api.financial.RedPacketsManageApi;
+import com.scchuangtou.api.financial.SearchHealthProjectDetailsApi;
+import com.scchuangtou.api.web.GetArticleInfoApi;
+import com.scchuangtou.api.web.GetHealthProjectDetailApi;
+import com.scchuangtou.api.web.GetHealthProjectEventDetailApi;
+import com.scchuangtou.api.web.GetHealthProjectEventsApi;
+import com.scchuangtou.api.web.GetHealthProjectsApi;
+import com.scchuangtou.api.web.GetSubjectInfoApi;
+import com.scchuangtou.api.web.WebSendVerifyCodeApi;
+import com.scchuangtou.config.Config;
+import com.scchuangtou.entity.BaseResEntity;
+import com.scchuangtou.utils.LogUtils;
+
+public abstract class BaseApi {
+
+	private static HashMap<String, Apis> apis = new HashMap<String, Apis>();
+
+	static {
+		/** ↓↓↓↓↓↓↓↓↓↓公用接口↓↓↓↓↓↓↓↓↓↓ **/
+		apis.put("register", Apis.getInstance(new RegisterApi(), false));
+		apis.put("top_up", Apis.getInstance(new TopUpApi(), false));
+		apis.put("check_top_up", Apis.getInstance(new CheckTopUpApi(), false));
+		apis.put("list_system_message", Apis.getInstance(new ListSystemMessageApi(), false));
+		apis.put("get_subjects", Apis.getInstance(new GetSubjectsApi(), false));
+		/** ↑↑↑↑↑↑↑↑↑↑公用接口↑↑↑↑↑↑↑↑↑↑ **/
+
+		/** ↓↓↓↓↓↓↓↓↓↓APP接口↓↓↓↓↓↓↓↓↓↓ **/
+		apis.put("sign_in", Apis.getInstance(new SignInApi(), true));
+		apis.put("get_signin_infos", Apis.getInstance(new GetSigninInfoApi(), true));
+
+		apis.put("edit_user_info", Apis.getInstance(new EditUserApi(), true));
+		apis.put("login", Apis.getInstance(new LoginApi(), true));
+		apis.put("find_login_password", Apis.getInstance(new FindPasswordApi(), true));
+		apis.put("edit_login_password", Apis.getInstance(new EditPasswordApi(), true));
+		apis.put("get_user_profile", Apis.getInstance(new GetUserProfileApi(), true));
+		apis.put("send_verify_code", Apis.getInstance(new SendVerifyCodeApi(), true));
+		apis.put("get_friend_counts", Apis.getInstance(new GetFriendCountsApi(), true));
+		apis.put("third_login", Apis.getInstance(new ThirdLoginApi(), true));
+		apis.put("thrid_account_bind", Apis.getInstance(new ThirdAccountBindApi(), true));
+		apis.put("bind_phone", Apis.getInstance(new BindPhoneApi(), true));
+		apis.put("get_my_gold_info", Apis.getInstance(new GetMyGoldInfoApi(), true));
+		apis.put("find_trade_password", Apis.getInstance(new FindTradePasswordApi(), true));
+		apis.put("set_trade_password", Apis.getInstance(new SetTradePasswordApi(), true));
+
+		// apis.put("reward", Apis.getInstance(new RewardApi(), true));//金币打赏
+
+		apis.put("withdrawals", Apis.getInstance(new WithdrawalsApi(), true));
+		apis.put("get_withdrawals", Apis.getInstance(new GetWithdrawalsApi(), true));
+
+		apis.put("get_comment", Apis.getInstance(new GetCommentApi(), true));
+		apis.put("comment", Apis.getInstance(new CommentApi(), true));
+
+		apis.put("praise", Apis.getInstance(new PraiseApi(), true));
+		apis.put("cancel_praise", Apis.getInstance(new CancelPraiseApi(), true));
+
+		apis.put("get_user_message_by_id", Apis.getInstance(new GetUserMessageApi(), true));
+		apis.put("list_user_message", Apis.getInstance(new ListUserMessageApi(), true));
+		apis.put("delete_user_message", Apis.getInstance(new DeleteUserMessageApi(), true));
+
+		apis.put("get_banners", Apis.getInstance(new GetBannersApi(), true));
+
+		apis.put("feedback", Apis.getInstance(new AddFeedBackApi(), true));
+		apis.put("get_promo_code", Apis.getInstance(new GetPromoCodeApi(), true));
+
+		apis.put("add_article", Apis.getInstance(new AddArticleApi(), true));
+		apis.put("delete_article", Apis.getInstance(new DeleteArticleApi(), true));
+		apis.put("get_no_circle_articles", Apis.getInstance(new GetNoCircleArticlesApi(), true));
+		apis.put("get_my_articles", Apis.getInstance(new GetMyArticlesApi(), true));
+		apis.put("get_collect_articles", Apis.getInstance(new GetCollectArticlesApi(), true));
+		apis.put("get_participation_articles", Apis.getInstance(new GetParticipationArticlesApi(), true));
+		apis.put("get_article_info", Apis.getInstance(new GetArticleInfoApi(), true));
+		apis.put("get_circle_articles", Apis.getInstance(new GetCircleArticlesApi(), true));
+		apis.put("collect", Apis.getInstance(new CollectApi(), true));
+		apis.put("cancel_collect", Apis.getInstance(new CancelCollectApi(), true));
+		// apis.put("add_circle", Apis.getInstance(new AddCircleApi(), true));
+		apis.put("get_circles", Apis.getInstance(new GetCirclesApi(), true));
+		apis.put("get_my_circles", Apis.getInstance(new GetMyCirclesApi(), true));
+		apis.put("join_circle", Apis.getInstance(new JoinCircleApi(), true));
+		apis.put("get_circle_detail", Apis.getInstance(new GetCircleDetailApi(), true));
+		apis.put("get_circle_members", Apis.getInstance(new GetCircleMembersApi(), true));
+		apis.put("quit_circle", Apis.getInstance(new QuitCircleApi(), true));
+		apis.put("add_capital_source", Apis.getInstance(new AddCapitalSourceApi(), true));
+		apis.put("report", Apis.getInstance(new ReportApi(), true));
+		apis.put("get_subject_info", Apis.getInstance(new GetSubjectInfoApi(), true));
+		apis.put("report_comment", Apis.getInstance(new ReportCommentApi(), true));
+		apis.put("exchange_integral", Apis.getInstance(new ExchangeIntegralApi(), true));
+		apis.put("get_total_integral", Apis.getInstance(new GetTotalIntegralApi(), true));
+		apis.put("identification", Apis.getInstance(new IdentificationApi(), true));
+		apis.put("get_identification_info", Apis.getInstance(new GetIdentificationInfoApi(), true));
+		apis.put("edit_identification", Apis.getInstance(new EditIdentificationApi(), true));
+		// apis.put("publish_help_each", Apis.getInstance(new
+		// PublishHelpEachApi(), true));
+		// apis.put("get_help_each_info", Apis.getInstance(new
+		// GetHelpEachInfoApi(), true));
+		// apis.put("get_help_eachs", Apis.getInstance(new GetHelpEachsApi(),
+		// true));
+		// apis.put("get_my_help_eachs", Apis.getInstance(new
+		// GetMyHelpEachsApi(), true));
+		// apis.put("get_collect_help_eachs", Apis.getInstance(new
+		// GetCollectHelpEachsApi(), true));
+		// apis.put("get_suported_help_eachs", Apis.getInstance(new
+		// GetSuportedHelpEachsApi(), true));
+		// apis.put("delete_help_each", Apis.getInstance(new
+		// DeleteHelpEachApi(), true));
+		// apis.put("prove", Apis.getInstance(new ProveApi(), true));
+		// apis.put("get_proves", Apis.getInstance(new GetProvesApi(), true));
+		// apis.put("doubt", Apis.getInstance(new DoubtApi(), true));
+		// apis.put("update_dynamics", Apis.getInstance(new UpdateDynamicsApi(),
+		// true));
+		// apis.put("get_dynamics", Apis.getInstance(new GetDynamicsApi(),
+		// true));
+		apis.put("publish_red_packet", Apis.getInstance(new PublishRedPacketApi(), true));
+		apis.put("get_red_packets", Apis.getInstance(new GetRedPacketsApi(), true));
+		apis.put("get_inner_red_packets", Apis.getInstance(new GetInnerRedPacketsApi(), true));
+		apis.put("grab_red_packet", Apis.getInstance(new GrabRedPacketApi(), true));
+		apis.put("grab_health_red_packet", Apis.getInstance(new GrabHealthRedPacketApi(), true));
+		apis.put("finish_red_packets", Apis.getInstance(new FinishRedPacketsApi(), true));
+		apis.put("carousel_red_packets", Apis.getInstance(new CarouselRedPacketsApi(), true));
+		apis.put("receive_red_packets", Apis.getInstance(new ReceiveRedPacketsApi(), true));
+		apis.put("published_red_packets", Apis.getInstance(new PublishedRedPacketsApi(), true));
+		apis.put("health_red_packets_record", Apis.getInstance(new HealthRedPacketsRecordApi(), true));
+		// apis.put("rank_list_packets", Apis.getInstance(new
+		// RankListPacketsApi(), true));
+		apis.put("get_health_projects", Apis.getInstance(new GetHealthProjectsApi(), true));
+		apis.put("get_health_project_detail", Apis.getInstance(new GetHealthProjectDetailApi(), true));
+		apis.put("join_health_project", Apis.getInstance(new JoinHealthProjectApi(), true));
+		apis.put("get_health_project_members", Apis.getInstance(new GetHealthProjectMembersApi(), true));
+		apis.put("health_member_topup_record", Apis.getInstance(new HealthMemberTopupRecordApi(), true));
+		apis.put("apply_for_salve", Apis.getInstance(new ApplyForSalveApi(), true));
+		apis.put("health_project_member_topup", Apis.getInstance(new HealthProjectMemberTopUpApi(), true));
+		apis.put("get_health_project_events", Apis.getInstance(new GetHealthProjectEventsApi(), true));
+		apis.put("get_health_project_event_detail", Apis.getInstance(new GetHealthProjectEventDetailApi(), true));
+		apis.put("participate_health_project_event", Apis.getInstance(new ParticipateHealthProjectEventApi(), true));
+		apis.put("health_project_idcar_verify", Apis.getInstance(new HealthProjectIdcarVerifyApi(), true));
+
+		apis.put("publish_activity", Apis.getInstance(new PublishActivityApi(), true));
+		apis.put("delete_activity", Apis.getInstance(new DeleteActivityApi(), true));
+		apis.put("get_activitys", Apis.getInstance(new GetActivitysApi(), true));
+		apis.put("get_activity_detail", Apis.getInstance(new GetActivityDetailApi(), true));
+		apis.put("get_my_activitys", Apis.getInstance(new GetMyActivitysApi(), true));
+		apis.put("get_collect_activitys", Apis.getInstance(new GetCollectActivitysApi(), true));
+		apis.put("get_participation_activitys", Apis.getInstance(new GetParticipationActivitysApi(), true));
+
+		apis.put("focus", Apis.getInstance(new FocusApi(), true));
+		apis.put("cancel_focus", Apis.getInstance(new CancelFocusApi(), true));
+		/** ↑↑↑↑↑↑↑↑↑↑APP接口↑↑↑↑↑↑↑↑↑↑ **/
+
+		/** ↓↓↓↓↓↓↓↓↓↓财务接口↓↓↓↓↓↓↓↓↓↓ **/
+		apis.put("financial_login", Apis.getInstance(new FinancialLoginApi(), false));
+		apis.put("update_financial_password", Apis.getInstance(new FinancialUpdatePasswordApi(), false));
+		apis.put("get_user_withdrawals", Apis.getInstance(new FinancialGetUserWithdrawalsApi(), false));
+		apis.put("audit_user_withdrawals", Apis.getInstance(new FinancialAuditUserWithdrawalsApi(), false));
+		apis.put("financial_get_gold_info", Apis.getInstance(new FinancialGetGoldInfoApi(), false));
+		apis.put("get_topup_info", Apis.getInstance(new FinancialGetTopUpInfoApi(), false));
+		apis.put("financial_publish_red_packet", Apis.getInstance(new FinancialPublishRedPacketApi(), false));
+		apis.put("search_red_packets", Apis.getInstance(new FinancialSearchRedPacketsApi(), false));
+		apis.put("add_promo_code", Apis.getInstance(new FinancialAddPromoCodeApi(), false));
+		apis.put("search_promo_codes", Apis.getInstance(new FinancialSearchPromoCodesApi(), false));
+
+		apis.put("get_common_data", Apis.getInstance(new GetCommonDataApi(), false));
+		apis.put("get_graph_data", Apis.getInstance(new GetGraphDataApi(), false));
+		apis.put("search_health_project_details", Apis.getInstance(new SearchHealthProjectDetailsApi(), false));
+		apis.put("health_project_detail_manage", Apis.getInstance(new HealthProjectDetailManageApi(), false));
+		apis.put("red_packets_manage", Apis.getInstance(new RedPacketsManageApi(), false));
+		/** ↑↑↑↑↑↑↑↑↑↑财务接口↑↑↑↑↑↑↑↑↑↑ **/
+
+		/** ↓↓↓↓↓↓↓↓↓↓web接口 ↓↓↓↓↓↓↓↓↓↓ **/
+		apis.put("web_send_verify_code", Apis.getInstance(new WebSendVerifyCodeApi(), false));
+		apis.put("web_get_health_project_detail", Apis.getInstance(new GetHealthProjectDetailApi(), false));
+		apis.put("web_get_health_project_events", Apis.getInstance(new GetHealthProjectEventsApi(), false));
+		apis.put("web_get_article_info", Apis.getInstance(new GetArticleInfoApi(), false));
+		apis.put("web_get_health_project_event_detail", Apis.getInstance(new GetHealthProjectEventDetailApi(), false));
+		apis.put("web_get_subject_info", Apis.getInstance(new GetSubjectInfoApi(), false));
+		apis.put("web_get_health_projects", Apis.getInstance(new GetHealthProjectsApi(), false));
+		/** ↑↑↑↑↑↑↑↑↑↑web接口 ↑↑↑↑↑↑↑↑↑↑ **/
+
+		/** ↓↓↓↓↓↓↓↓↓↓admin接口↓↓↓↓↓↓↓↓↓↓ **/
+		apis.put("admin_login", Apis.getInstance(new AdminLoginApi(), false));
+		apis.put("update_admin_password", Apis.getInstance(new EditAdminPasswordApi(), false));
+		apis.put("update_admin_info", Apis.getInstance(new EditAdminInfoApi(), false));
+		apis.put("list_child_admin", Apis.getInstance(new ListChildAdminApi(), false));
+		apis.put("add_child_admin", Apis.getInstance(new AdminAddChildApi(), false));
+		apis.put("edit_child_admin", Apis.getInstance(new AdminEditChildApi(), false));
+
+		apis.put("admin_add_banner", Apis.getInstance(new AdminAddBannerApi(), false));
+		apis.put("admin_get_bananers", Apis.getInstance(new AdminGetBananersApi(), false));
+		apis.put("delete_banner", Apis.getInstance(new AdminDeleteBannerApi(), false));
+
+		apis.put("admin_get_circles", Apis.getInstance(new AdminGetCircles(), false));
+		apis.put("admin_add_circle", Apis.getInstance(new AdminAddCircleApi(), false));
+		apis.put("edit_circle", Apis.getInstance(new EditCircle(), false));
+
+		apis.put("admin_add_subject", Apis.getInstance(new AdminAddSubjectApi(), false));
+		apis.put("admin_delete_subject", Apis.getInstance(new AdminDeleteSubjectApi(), false));
+
+		apis.put("admin_add_article", Apis.getInstance(new AdminAddArticleApi(), false));
+		apis.put("admin_get_articles", Apis.getInstance(new AdminGetArticles(), false));
+		apis.put("admin_manager_article", Apis.getInstance(new AdminManagerArticleApi(), false));
+
+		apis.put("add_system_message", Apis.getInstance(new AdminAddSystemMsgApi(), false));
+		apis.put("delete_system_message", Apis.getInstance(new AdminDeleteSystemMsgApi(), false));
+		apis.put("edit_system_message", Apis.getInstance(new AdminEditSystemMsgApi(), false));
+
+		apis.put("list_feed_back", Apis.getInstance(new AdminGetFeedBackApi(), false));
+		apis.put("delete_feed_back", Apis.getInstance(new AdminDeleteFeedbackApi(), false));
+
+		apis.put("admin_get_users", Apis.getInstance(new AdminGetUsersApi(), false));
+		apis.put("admin_edit_user", Apis.getInstance(new AdminEditUserApi(), false));
+		apis.put("admin_users_info", Apis.getInstance(new AdminUsersInfoApi(), false));
+		apis.put("admin_get_user_health_events", Apis.getInstance(new AdminGetMyHealthProjectEventsApi(), false));
+		apis.put("admin_get_my_articles", Apis.getInstance(new AdminGetMyArticlesApi(), false));
+
+		apis.put("admin_get_identifications", Apis.getInstance(new AdminGetIdentiicationsApi(), false));
+		apis.put("admin_action_identification", Apis.getInstance(new AdminActionIdentificationApi(), false));
+
+		apis.put("admin_get_health_project_members", Apis.getInstance(new AdminGetHealthProjectMembersApi(), false));
+		apis.put("admin_health_project_members_manage",
+				Apis.getInstance(new AdminHealthProjectMembersManageApi(), false));
+		
+		apis.put("admin_homepage_data", Apis.getInstance(new AdminHomepageDataApi(), false));
+		
+		/** ↑↑↑↑↑↑↑↑↑↑admin接口↑↑↑↑↑↑↑↑↑↑ **/
+	}
+
+	protected abstract BaseResEntity action(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+	private final static Response dispatcherAction(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String type = request.getParameter(Config.REQUEST_PARAMETER_TYPE);
+		Apis api = apis.get(type);
+		if (api == null) {
+			return null;
+		}
+		long s = System.currentTimeMillis();
+		Response res = null;
+		Object resObj = api.api.action(request, response);
+		if (resObj != null) {
+			res = new Response();
+			res.isGzip = api.isGizp;
+			if (resObj instanceof String) {
+				res.res = resObj.toString();
+			} else {
+				res.res = JSON.toJSONString(resObj);
+			}
+		}
+		long e = System.currentTimeMillis();
+		System.out.println(new StringBuffer().append("type:").append(type).append(",time:").append(e - s).toString());
+		return res;
+	}
+
+	public final static BaseResEntity dispatcher(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String type = request.getParameter(Config.REQUEST_PARAMETER_TYPE);
+		Apis api = apis.get(type);
+		if (api == null) {
+			return null;
+		}
+		return api.api.action(request, response);
+	}
+
+	public final static Response dispatcher2JSON(HttpServletRequest request, HttpServletResponse response) {
+		Response res = null;
+		try {
+			res = dispatcherAction(request, response);
+		} catch (Exception e) {
+			LogUtils.log(e);
+			res = new Response();
+			res.isGzip = false;
+			BaseResEntity re = new BaseResEntity();
+			re.status = Config.STATUS_SERVER_ERROR;
+			res.res = JSON.toJSONString(re);
+		}
+		if (res == null) {
+			res = new Response();
+			res.isGzip = false;
+			BaseResEntity re = new BaseResEntity();
+			re.status = Config.STATUS_PARAMETER_ERROR;
+			res.res = JSON.toJSONString(re);
+		}
+		return res;
+	}
+
+	public static final String getClientIP(javax.servlet.http.HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
+	}
+
+	public static class Response {
+		public boolean isGzip;
+		public String res;
+	}
+
+	private static final class Apis {
+		public BaseApi api;
+		public boolean isGizp = false;
+
+		private Apis(BaseApi api, boolean isGizp) {
+			this.api = api;
+			this.isGizp = isGizp;
+		}
+
+		public static Apis getInstance(BaseApi api, boolean isGizp) {
+			return new Apis(api, isGizp);
+		}
+	}
+}

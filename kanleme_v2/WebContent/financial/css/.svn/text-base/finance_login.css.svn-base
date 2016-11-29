@@ -1,0 +1,60 @@
+@charset "utf-8";
+/* CSS Document */
+/*公共样式*/
+*{ margin: 0; padding: 0; font-weight:100}
+body{ width:100%; height:100%; min-width:1100px; font-weight:100; font-family: "冬青黑体","微软雅黑","华文细黑","宋体";font-size:12px;}
+input,button{outline: none; background:none; border:none;}
+textarea{outline: none; background:none; }
+img{border: none;}
+ul,li{list-style: none;}
+a,a:active,a:link,a:visited,a:focus,a:hover{text-decoration: none;}
+.clearfix:after{content: "";width: 0;height: 0;clear: both;display: block;visibility: hidden;}
+.clearfix{zoom: 1;}
+.CL{clear:both; height:0px; overflow:hidden;}
+.fl{float: left;}
+.fr{float: right;}
+button{ padding:0; margin:0;}
+b{ font-weight:100;}
+
+
+/*登录界面*/
+body { background:url(../images/finance_admin_bg.jpg) no-repeat 0 0;}
+.container {width: 402px;height: 347px;padding: 34px 30px 9px;position: absolute;left: 50%;top: 50%;margin: -250px auto 0 -231px;}
+.login-nav button {font-size: 18px;color: #A0A0A0;width: 200px;padding: 20px 39px 20px 40px;border: none;float: left;}
+button.nav-button-hover {color: #fff;padding-top: 15px;}
+button.nav-button-no-hover {color: #AFAFAF;padding-top: 18px;border-bottom: 2px solid #F7F7F7;}
+.login-box {margin-top: 20px; padding-bottom:20px; background:#fff; border-radius:5px;}
+/*新改*/
+.login-nav{ text-align:center;}
+.d_title{ width:100%; height:50px; line-height:50px; font-size:20px; color:#fff; background:#38d3b5;border-top-left-radius:5px;border-top-right-radius:5px; letter-spacing:1px; font-weight:100;}
+.d_title span{ padding-left:30px;}
+.d_con{ width:90%; margin:20px auto;border: 1px solid #F2F2F2; }
+.d_con_phone img{ width:12px; height:auto; position:relative; top:6px;}
+.d_con_pwd img{width:12px; height:auto; position:relative; top:4px;}
+
+.from-box{ width: 400px; margin: 0 auto;}
+.input-group {}
+.input-field {font-size: 16px;color: #CFCFCF;height:45px; line-height:45px; border-bottom:1px solid #F2F2F2;}
+.input-field label { font-size: 16px;width: 27px;text-align: right; display: inline-block;color: #aaa;}
+.input-field .text-input {padding: 8px 4px;width: 260px; padding:0 10px; border-radius: 5px; font-size:15px; color:#999; height:45px; line-height:45px;}
+.input-area-group .text-area {padding: 8px 4px;border: 1px solid #F2F2F2;width: 78%; margin-left: 22px;border-radius: 5px;}
+.input-field .text-select{padding: 8px 4px; border: 1px solid #F2F2F2; width: 68%;margin-left: 22px;border-radius: 5px;}
+.from-submit { width:406px; margin-top: 7px;}
+.from-submit button {font-size: 18px; color: #fff; background: #38d3b5; border: none; border-radius: 5px;width: 100%; padding: 10px 0;}
+.from-submit-tow button{ width: auto; padding: 15px 42px;}
+.from-box .b-l{ float: left;}
+.from-box .b-r{ float: right;}
+.from-box .cancel-btn{ color: #C3C3C3; border: 1px solid #E6EAEE; background: #FEFEFE;}
+.error-notic {color: #ED2655;padding: 4px 0 8px;display: none;padding-left: 13px; padding-top: 10px;font-size:14px;}
+
+.id_yan{}
+.id_yan label{font-size: 16px; width: 27px;text-align: right;display: inline-block;color: #aaa;}
+.id_yan label img{width:12px; height:auto; position:relative; top:4px;}
+.id_yan input{padding: 8px 4px; width:200px;margin-left: 5px;border-radius: 5px;font-size:15px; color:#999;}
+#imageVerifyCode{ height:45px;}
+
+
+
+
+
+

@@ -1,0 +1,1093 @@
+package com.scchuangtou.dao;
+
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.alibaba.fastjson.JSON;
+import com.scchuangtou.config.AdminConfig;
+import com.scchuangtou.config.Config;
+import com.scchuangtou.entity.AdminEditUserReqEntity;
+import com.scchuangtou.entity.AdminEditUserResEntity;
+import com.scchuangtou.entity.AdminGetUsersReqEntity;
+import com.scchuangtou.entity.AdminGetUsersResEntity;
+import com.scchuangtou.entity.AdminUsersInfoReqEntity;
+import com.scchuangtou.entity.AdminUsersInfoResEntity;
+import com.scchuangtou.entity.BindPhoneReqEntity;
+import com.scchuangtou.entity.BindPhoneResEntity;
+import com.scchuangtou.entity.EditPasswordResEntity;
+import com.scchuangtou.entity.EditUserReqEntity;
+import com.scchuangtou.entity.EditUserResEntity;
+import com.scchuangtou.entity.FindPasswordReqEntity;
+import com.scchuangtou.entity.FindPasswordResEntity;
+import com.scchuangtou.entity.FindTradePassReqEntity;
+import com.scchuangtou.entity.FindTradePassResEntity;
+import com.scchuangtou.entity.GetFriendCountsReqEntity;
+import com.scchuangtou.entity.GetFriendCountsResEntity;
+import com.scchuangtou.entity.GetUserProfileResEntity;
+import com.scchuangtou.entity.LoginResEntity;
+import com.scchuangtou.entity.RegisterReqEntity;
+import com.scchuangtou.entity.RegisterResEntity;
+import com.scchuangtou.entity.SetTradePassReqEntity;
+import com.scchuangtou.entity.SetTradePassResEntity;
+import com.scchuangtou.entity.ThirdLoginReqEntity;
+import com.scchuangtou.entity.ThirdLoginResEntity;
+import com.scchuangtou.helper.ImageHelper;
+import com.scchuangtou.http.MyMutiPart;
+import com.scchuangtou.model.AdminInfo;
+import com.scchuangtou.model.HomepageGraphInfo;
+import com.scchuangtou.model.User;
+import com.scchuangtou.model.UserProfile;
+import com.scchuangtou.model.UserValueInfo;
+import com.scchuangtou.utils.DBUtils;
+import com.scchuangtou.utils.DBUtils.PreparedStatementCache;
+import com.scchuangtou.utils.DESUtils;
+import com.scchuangtou.utils.DateUtil;
+import com.scchuangtou.utils.IdUtils;
+import com.scchuangtou.utils.LogUtils;
+import com.scchuangtou.utils.MD5Utils;
+import com.scchuangtou.utils.MathUtils;
+import com.scchuangtou.utils.StringUtils;
+
+public class UserDao {
+	public static final int USER_STATUS_DISABLE = -1;// 停用
+	public static final int USER_STATUS_NORMAL = 0;// 正常
+	public static final int USER_STATUS_BANNED = 1;// 封禁
+
+	private static String parseNickname(String nickname) {
+		return nickname.replaceAll(" ", "").replaceAll("(?:国立|官方|看了么|管理员|爹|妈|爷)", "*");
+	}
+
+	private static String getHeadName(String user_id) {
+		return new StringBuffer(user_id).append("/head/").append(user_id).toString();
+	}
+
+	private static String createNickname(String phoneNumber) {
+		if (phoneNumber.length() >= 5) {
+			phoneNumber = phoneNumber.substring(phoneNumber.length() - 4);
+		}
+		return "会员_" + phoneNumber;
+	}
+
+	public static RegisterResEntity register(RegisterReqEntity req) throws SQLException {
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+
+			RegisterResEntity regRes = new RegisterResEntity();
+
+			String inviteUserID = null;
+			if (!StringUtils.emptyString(req.invite_code)) {
+				inviteUserID = getUserIdByInviteCode(conn, req.invite_code);
+				if (StringUtils.emptyString(inviteUserID)) {
+					regRes.status = Config.STATUS_INVITE_CODE_NOT_EXITS;
+					return regRes;
+				}
+			}
+
+			float giving_gold = 0;
+			long giving_growth = Config.GrowthGiving.REGISTER;
+
+			String user_id = IdUtils.getId(req.phone_number);
+			String token = IdUtils.createId(user_id);
+			String key = DESUtils.createKey();
+			String nickname = createNickname(req.phone_number);
+
+			HashMap<String, Object> datas = new HashMap<String, Object>();
+			datas.put("user_id", user_id);
+			datas.put("user_name", req.phone_number);
+			datas.put("login_password", req.login_password);
+			datas.put("nickname", nickname);
+			datas.put("phone_number", req.phone_number);
+			datas.put("token", token);
+			datas.put("user_key", key);
+			datas.put("gold", giving_gold);
+			datas.put("growth", giving_growth);
+			datas.put("registration_time", System.currentTimeMillis());
+			datas.put("status", USER_STATUS_NORMAL);
+			datas.put("is_complete", false);
+			datas.put("third_login", false);
+			datas.put("certification", Config.CertificationStauts.CERTIFICATION_STATUS_NORMAL);
+			if (!StringUtils.emptyString(inviteUserID)) {
+				datas.put("invite_user", inviteUserID);
+			}
+			datas.put("os", req.os);
+			datas.put("close_time", 0);
+			datas.put("login_time", System.currentTimeMillis());
+
+			DBUtils.beginTransaction(conn);
+			int row = 0;
+			String invite_code = null;
+			try {
+				if (!VerifyCodeDao.checkVerifyCode(conn, req.phone_number, req.verify_code)) {
+					regRes.status = Config.STATUS_VERIFY_CODE_ERROR;
+				} else {
+					invite_code = InviteCodeDao.getInviteCode(conn);
+					datas.put("invite_code", invite_code);
+
+					row = DBUtils.insert(conn, "INSERT IGNORE INTO userinfo", datas);
+					if (row > 0 && !StringUtils.emptyString(inviteUserID)) {
+						UserValueInfo value = new UserValueInfo();
+						value.growth = Config.GrowthGiving.INVITE_USER;
+						row = updateUserValue(conn, inviteUserID, value, null, null, 0, null);
+					}
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				regRes.status = Config.STATUS_OK;
+				regRes.profile = new UserProfile();
+				regRes.profile.user_id = user_id;
+				regRes.profile.token = token;
+				regRes.profile.invite_code = invite_code;
+				regRes.profile.nickname = nickname;
+				regRes.profile.key = key;
+				regRes.profile.gold = giving_gold;
+				regRes.profile.growth = giving_growth;
+				regRes.profile.level = Config.getLevel(regRes.profile.growth);
+				regRes.profile.is_complete = false;
+				regRes.profile.third_login = false;
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(regRes.status))
+					regRes.status = Config.STATUS_USER_EXITS;
+			}
+			return regRes;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static String updateUserValue(DBUtils.ConnectionCache conn, String userid, float gold, List<String> vouchers,
+			String set, String where, int gold_change_type, String note_desc) throws SQLException {
+		int row = 1;
+		if (gold != 0) {
+			StringBuffer sql = new StringBuffer();
+			sql.append("update userinfo set gold=gold+?");
+			if (!StringUtils.emptyString(set)) {
+				sql.append(" ,").append(set);
+			}
+			sql.append(" WHERE user_id=?");
+			if (!StringUtils.emptyString(where)) {
+				sql.append(" AND ").append(where);
+			}
+			if (gold < 0) {
+				sql.append(" AND gold>=").append(Math.abs(gold));
+			}
+			row = DBUtils.executeUpdate(conn, sql.toString(), new Object[] { gold, userid });
+		}
+		if (row > 0) {
+			if (gold != 0 || (vouchers != null && vouchers.size() > 0))
+				return GoldNotesDao.addGoldNote(conn, gold_change_type, userid, gold, vouchers,
+						Config.GoldType.GOLD_TYPE_NORMAL, note_desc);
+		}
+		return null;
+	}
+
+	public static int updateUserValue(DBUtils.ConnectionCache conn, String userid, UserValueInfo value, String set,
+			String where, int gold_change_type, String note_desc) throws SQLException {
+		int row = 1;
+		if (value.gold != 0 || value.growth != 0) {
+			StringBuffer sql = new StringBuffer();
+			sql.append("update userinfo set gold=gold+?,growth=growth+?");
+			if (!StringUtils.emptyString(set)) {
+				sql.append(" ,").append(set);
+			}
+			sql.append(" WHERE user_id=?");
+			if (!StringUtils.emptyString(where)) {
+				sql.append(" AND ").append(where);
+			}
+			if (value.gold < 0) {
+				sql.append(" AND gold>=").append(Math.abs(value.gold));
+			}
+			row = DBUtils.executeUpdate(conn, sql.toString(), new Object[] { value.gold, value.growth, userid });
+		}
+		if (row > 0) {
+			if (value.gold != 0) {
+				String id = GoldNotesDao.addGoldNote(conn, gold_change_type, userid, value.gold, null,
+						Config.GoldType.GOLD_TYPE_NORMAL, note_desc);
+				row = StringUtils.emptyString(id) ? 0 : 1;
+			}
+		}
+		return row;
+	}
+
+	public static User getUserByUserName(DBUtils.ConnectionCache conn, String username) throws SQLException {
+		return getUser(conn, "user_name=?", username);
+	}
+
+	public static boolean phoneNumberIsBind(DBUtils.ConnectionCache conn, String phoneNumbewr) throws SQLException {
+		User user = getUser(conn, "phone_number=?", phoneNumbewr);
+		return user != null;
+	}
+
+	public static User getUserByToken(DBUtils.ConnectionCache conn, String token) throws SQLException {
+		return getUser(conn, "token=? AND status<>? AND close_time<?", token, USER_STATUS_DISABLE,
+				System.currentTimeMillis());
+	}
+
+	public static User getUser(DBUtils.ConnectionCache conn, String userid) throws SQLException {
+		return getUser(conn, "user_id=?", userid);
+	}
+
+	private static User getUser(DBUtils.ConnectionCache conn, String where, Object... values) throws SQLException {
+		User mUser = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			StringBuffer sql = new StringBuffer(
+					"SELECT user_id,token,user_name,login_password,third_login,is_complete,nickname,gold,growth,invite_user,invite_code,phone_number,sex,status,registration_time,user_key,head_pic,address,os,signature,add_circle_num,trade_password,certification,red_packet_count,banned_time,ban_withdrawals_time,close_time FROM userinfo");
+			if (where.trim().toLowerCase().startsWith("where")) {
+				sql.append(" ").append(where);
+			} else {
+				sql.append(" WHERE ").append(where);
+			}
+			pstat = conn.prepareStatement(sql.toString());
+			if (values != null) {
+				for (int i = 0, len = values.length; i < len; i++) {
+					pstat.setObject(i + 1, values[i]);
+				}
+			}
+			rs = pstat.executeQuery();
+			if (rs.next()) {
+				mUser = new User();
+				mUser.user_id = rs.getString("user_id");
+				mUser.user_name = rs.getString("user_name");
+				mUser.login_password = rs.getString("login_password");
+				mUser.third_login = rs.getBoolean("third_login");
+				mUser.is_complete = rs.getBoolean("is_complete");
+				mUser.nickname = rs.getString("nickname");
+				mUser.gold = rs.getFloat("gold");
+				mUser.growth = rs.getLong("growth");
+				mUser.invite_user = rs.getString("invite_user");
+				mUser.invite_code = rs.getString("invite_code");
+				mUser.phone_number = rs.getString("phone_number");
+				mUser.sex = rs.getInt("sex");
+				mUser.status = rs.getInt("status");
+				mUser.registration_time = rs.getLong("registration_time");
+				mUser.user_key = rs.getString("user_key");
+				mUser.head_pic = rs.getString("head_pic");
+				mUser.address = rs.getString("address");
+				mUser.os = rs.getInt("os");
+				mUser.signature = rs.getString("signature");
+				mUser.add_circle_num = rs.getInt("add_circle_num");
+				mUser.trade_password = rs.getString("trade_password");
+				mUser.certification = rs.getInt("certification");
+				mUser.red_packet_count = rs.getInt("red_packet_count");
+				mUser.banned_time = rs.getLong("banned_time");
+				mUser.close_time = rs.getLong("close_time");
+				mUser.ban_withdrawals_time = rs.getLong("ban_withdrawals_time");
+			}
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+		}
+		return mUser;
+	}
+
+	private static UserProfile getUserProfile(DBUtils.ConnectionCache conn, String where, Object... values)
+			throws SQLException {
+		User mUser = getUser(conn, where, values);
+		if (mUser != null) {
+			UserProfile profile = new UserProfile();
+
+			profile.user_id = mUser.user_id;
+			profile.sequestration_time = mUser.close_time;
+			if (System.currentTimeMillis() < profile.sequestration_time) {
+				return profile;
+			}
+			profile.user_name = mUser.user_name;
+			profile.third_login = mUser.third_login;
+			profile.is_complete = mUser.is_complete;
+			profile.nickname = mUser.nickname;
+			profile.gold = mUser.gold;
+			profile.growth = mUser.growth;
+			profile.level = Config.getLevel(mUser.growth);
+			profile.invite_user = mUser.invite_user;
+			profile.invite_code = mUser.invite_code;
+			profile.phone_number = mUser.phone_number;
+			profile.sex = mUser.sex;
+			profile.red_packet_count = mUser.red_packet_count;
+			profile.registration_time = mUser.registration_time;
+			profile.key = mUser.user_key;
+			profile.head_pic = mUser.head_pic;
+			profile.address = mUser.address;
+			profile.signature = mUser.signature;
+			if (StringUtils.emptyString(mUser.trade_password)) {
+				profile.hasTradePassword = false;
+			} else {
+				profile.hasTradePassword = true;
+			}
+			profile.certification = mUser.certification;
+			profile.sigin_time = SiginDao.todayIsSignin(conn, profile.user_id);
+			profile.vouchers = UserVouchersDao.getHealthProjectUserVouchersInfoList(conn, profile.user_id, 0, true);
+			profile.capital_sources = CapitalSourceDao.getCapitalSourcesByUserId(conn, profile.user_id);
+			profile.thrid_accounts = UserThirdAccountDao.getUserAccounts(conn, profile.user_id);
+			return profile;
+		} else {
+			return null;
+		}
+	}
+
+	public static GetUserProfileResEntity getUserProfile(String token, HttpServletRequest request) throws Exception {
+		DBUtils.ConnectionCache conn = null;
+		GetUserProfileResEntity res = new GetUserProfileResEntity();
+		try {
+			conn = DBUtils.getConnection();
+			UserProfile userProfile = getUserProfile(conn, "token=? AND status<>? AND close_time<?", token,
+					USER_STATUS_DISABLE, System.currentTimeMillis());
+			if (userProfile != null) {
+				if (!StringUtils.emptyString(userProfile.head_pic))
+					userProfile.head_pic = ImageHelper.getImageUrl(request, userProfile.head_pic);
+				res.status = Config.STATUS_OK;
+				res.profile = userProfile;
+			} else {
+				res.status = Config.STATUS_TOKEN_ERROR;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static ThirdLoginResEntity thirdLogin(HttpServletRequest request, ThirdLoginReqEntity req) throws Exception {
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+
+			String token = IdUtils.createId(req.id);
+			int row = 0;
+			String user_id = UserThirdAccountDao.getUserId(conn, req.id, req.type);
+			if (!StringUtils.emptyString(user_id)) {
+				String sql = "UPDATE userinfo SET token=?,os=?,login_time=? WHERE user_id=?";
+				row = DBUtils.executeUpdate(conn, sql,
+						new Object[] { token, req.os, System.currentTimeMillis(), user_id });
+			}
+			if (row > 0) {
+				UserProfile profile = getUserProfile(conn, "token=? AND status<>?", token, USER_STATUS_DISABLE);
+
+				ThirdLoginResEntity logResInfo = new ThirdLoginResEntity();
+				if (profile == null) {
+					logResInfo.status = Config.STATUS_ACCOUNT_ERROR;
+				} else {
+					if (System.currentTimeMillis() >= profile.sequestration_time) {
+						logResInfo.status = Config.STATUS_OK;
+						if (!StringUtils.emptyString(profile.head_pic)) {
+							profile.head_pic = ImageHelper.getImageUrl(request, profile.head_pic);
+						}
+						logResInfo.profile = profile;
+						logResInfo.profile.token = token;
+					} else {
+						logResInfo.status = Config.STATUS_USER_SEQUESTRATION;
+						logResInfo.sequestration_time = profile.sequestration_time;
+					}
+				}
+				return logResInfo;
+			} else {
+				user_id = IdUtils.createId(token);
+				String key = DESUtils.createKey();
+				String head_pic_name = null;
+				String invite_code = null;
+
+				HashMap<String, Object> datas = new HashMap<String, Object>();
+				datas.put("user_id", user_id);
+				datas.put("user_name", user_id);
+				datas.put("login_password", MD5Utils.md5(user_id.getBytes(), MD5Utils.MD5Type.MD5_32));
+				datas.put("token", token);
+				datas.put("user_key", key);
+				datas.put("registration_time", System.currentTimeMillis());
+				datas.put("status", USER_STATUS_NORMAL);
+				datas.put("is_complete", false);
+				datas.put("third_login", true);
+				datas.put("nickname", parseNickname(req.nickname));
+				datas.put("sex", req.sex);
+				datas.put("certification", Config.CertificationStauts.CERTIFICATION_STATUS_NORMAL);
+				datas.put("close_time", 0);
+				datas.put("os", req.os);
+
+				DBUtils.beginTransaction(conn);
+				try {
+					if (!StringUtils.emptyString(req.head_pic)) {
+						head_pic_name = getHeadName(user_id);
+						if (ImageHelper.upload(head_pic_name, new URL(req.head_pic))) {
+							datas.put("head_pic", head_pic_name);
+						}
+					}
+					invite_code = InviteCodeDao.getInviteCode(conn);
+					datas.put("invite_code", invite_code);
+					row = DBUtils.insert(conn, "INSERT IGNORE INTO userinfo", datas);
+					if (row > 0) {
+						row = UserThirdAccountDao.bind(conn, req.type, req.id, req.nickname, user_id);
+					}
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				} catch (Exception e) {
+					LogUtils.log(e);
+					row = 0;
+				}
+				ThirdLoginResEntity regRes = new ThirdLoginResEntity();
+				if (row > 0) {
+					regRes.status = Config.STATUS_OK;
+					regRes.profile = new UserProfile();
+					regRes.profile.token = token;
+					regRes.profile.user_id = user_id;
+					regRes.profile.invite_code = invite_code;
+					regRes.profile.nickname = req.nickname;
+					regRes.profile.sex = req.sex;
+					regRes.profile.key = key;
+					regRes.profile.third_login = true;
+					regRes.profile.is_complete = false;
+					if (!StringUtils.emptyString(head_pic_name)) {
+						regRes.profile.head_pic = ImageHelper.getImageUrl(request, head_pic_name);
+					}
+					regRes.profile.thrid_accounts = new ArrayList<>();
+					UserProfile.ThridAccountInfo account = new UserProfile.ThridAccountInfo();
+					account.nickname = req.nickname;
+					account.type = req.type;
+					regRes.profile.thrid_accounts.add(account);
+				} else {
+					DBUtils.rollbackTransaction(conn);
+					ImageHelper.deleteByName(head_pic_name);
+					regRes.status = Config.STATUS_SERVER_ERROR;
+				}
+				return regRes;
+			}
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static LoginResEntity login(String phone_number, String password, int os) throws SQLException {
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			String token = IdUtils.createId(phone_number);
+			int row = DBUtils.executeUpdate(conn,
+					"UPDATE userinfo SET token=?,os=?,login_time=? WHERE phone_number=? AND login_password=?",
+					new Object[] { token, os, System.currentTimeMillis(), phone_number, password });
+
+			LoginResEntity logResInfo = new LoginResEntity();
+			if (row > 0) {
+				UserProfile profile = getUserProfile(conn, "token=? AND status<>?", token, USER_STATUS_DISABLE);
+				if (profile != null) {
+					if (System.currentTimeMillis() >= profile.sequestration_time) {
+						logResInfo.status = Config.STATUS_OK;
+						logResInfo.profile = profile;
+						logResInfo.profile.token = token;
+					} else {
+						logResInfo.status = Config.STATUS_USER_SEQUESTRATION;
+						logResInfo.sequestration_time = profile.sequestration_time;
+					}
+					return logResInfo;
+				}
+			}
+			logResInfo.status = Config.STATUS_PASSWORD_ERROR;
+			return logResInfo;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static String getUserIdByInviteCode(DBUtils.ConnectionCache conn, String invite_code) throws SQLException {
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT user_id FROM userinfo WHERE invite_code=?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setObject(1, invite_code);
+			rs = pstat.executeQuery();
+			if (rs.next()) {
+				return rs.getString("user_id");
+			}
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+		}
+		return null;
+	}
+
+	public static BindPhoneResEntity bindPhone(BindPhoneReqEntity req) throws Exception {
+		BindPhoneResEntity res = new BindPhoneResEntity();
+
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+
+			User user = getUserByToken(conn, req.token);
+			if (user == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			UserValueInfo value = new UserValueInfo();
+
+			DBUtils.beginTransaction(conn);
+			int row = 0;
+			try {
+				if (!VerifyCodeDao.checkVerifyCode(conn, req.phone_number, req.verify_code)) {
+					res.status = Config.STATUS_VERIFY_CODE_ERROR;
+				} else {
+					String sql = "update userinfo set phone_number=? WHERE user_id=?";
+					row = DBUtils.executeUpdate(conn, sql, new Object[] { req.phone_number, user.user_id });
+					if (row > 0 && StringUtils.emptyString(user.phone_number)) {
+						value.growth = Config.GrowthGiving.REGISTER;
+						updateUserValue(conn, user.user_id, value, null, " (phone_number ='' or phone_number is NULL)",
+								0, null);
+					}
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+				res.giving_gold = value.gold;
+				res.gold = MathUtils.sum(user.gold, value.gold);
+				res.growth = user.growth + value.growth;
+				res.level = Config.getLevel(res.growth);
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_PHONE_NUMBER_EXITS;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static EditUserResEntity editUser(HttpServletRequest request, EditUserReqEntity req, MyMutiPart headPicPart)
+			throws Exception {
+		if (!StringUtils.emptyString(req.nickname)) {
+			req.nickname = parseNickname(req.nickname);
+		}
+
+		EditUserResEntity res = new EditUserResEntity();
+		DBUtils.ConnectionCache conn = null;
+		if (StringUtils.isEmoji(req.address)) {
+			res.status = Config.STATUS_STRING_INCLUDE_EMOJI;
+			return res;
+		}
+		try {
+			conn = DBUtils.getConnection();
+			User user = UserDao.getUserByToken(conn, req.token);
+			if (user == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			String newHead = null;
+			String oldHead = user.head_pic;
+
+			StringBuffer sb = new StringBuffer();
+			sb.append("UPDATE userinfo SET sex=").append(req.sex);
+			if (!StringUtils.emptyString(req.nickname)) {
+				sb.append(",nickname='").append(req.nickname).append("'");
+			}
+			if (!StringUtils.emptyString(req.address)) {
+				sb.append(",address='").append(req.address).append("'");
+			}
+			if (!StringUtils.emptyString(req.signature)) {
+				sb.append(",signature='").append(req.signature).append("'");
+			}
+			if (headPicPart != null) {
+				newHead = getHeadName(user.user_id);
+				if (ImageHelper.upload(newHead, headPicPart, false) == null) {
+					res.status = Config.STATUS_SERVER_ERROR;
+					return res;
+				}
+				sb.append(",head_pic='").append(newHead).append("'");
+			}
+			sb.append(" WHERE user_id='").append(user.user_id).append("'");
+
+			int row = 0;
+			float giving_gold = 0;
+			long giving_growth = 0;
+			try {
+				DBUtils.beginTransaction(conn);
+
+				row = DBUtils.executeUpdate(conn, sb.toString(), null);
+				if (row > 0 && StringUtils.emptyString(oldHead)) {
+					UserValueInfo valueInfo = new UserValueInfo();
+					valueInfo.growth = Config.GrowthGiving.UPLOAD_HEAD;
+					giving_growth += valueInfo.growth;
+					row = UserDao.updateUserValue(conn, user.user_id, valueInfo, null, null, 0, null);
+				}
+				if (row > 0 && !user.is_complete) {
+					UserValueInfo valueInfo = new UserValueInfo();
+					valueInfo.growth = Config.GrowthGiving.COMPLETE_USERINFO;
+					giving_growth += valueInfo.growth;
+					row = UserDao.updateUserValue(conn, user.user_id, valueInfo, "is_complete=1", "is_complete = 0", 0,
+							null);
+				}
+				if (row > 0) {
+					DBUtils.commitTransaction(conn);
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+				res.nickname = req.nickname;
+				res.giving_gold = giving_gold;
+				res.gold = MathUtils.sum(user.gold, giving_gold);
+				res.growth = user.growth + giving_growth;
+				res.level = Config.getLevel(res.growth);
+				if (!StringUtils.emptyString(newHead)) {
+					if (!StringUtils.emptyString(oldHead)) {
+						ImageHelper.deleteByName(oldHead);
+					}
+					res.head_pic = ImageHelper.getImageUrl(request, newHead);
+				} else if (!StringUtils.emptyString(oldHead)) {
+					res.head_pic = ImageHelper.getImageUrl(request, oldHead);
+				}
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_SERVER_ERROR;
+				if (!StringUtils.emptyString(newHead)) {
+					ImageHelper.deleteByName(newHead);
+				}
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static FindPasswordResEntity findPassword(FindPasswordReqEntity req) throws SQLException {
+		FindPasswordResEntity res = new FindPasswordResEntity();
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			User user = getUser(conn, "phone_number=?", req.user_name);
+			if (user == null) {
+				res.status = Config.STATUS_NOT_EXITS;
+				return res;
+			}
+
+			DBUtils.beginTransaction(conn);
+			int row = 0;
+			try {
+				if (!VerifyCodeDao.checkVerifyCode(conn, user.phone_number, req.verify_code)) {
+					res.status = Config.STATUS_VERIFY_CODE_ERROR;
+				} else {
+					String user_key = DESUtils.createKey();
+					String token = IdUtils.createId(user.user_id);
+					String sql = "update userinfo set login_password=?,user_key=?,token=? where user_id=?";
+					row = DBUtils.executeUpdate(conn, sql,
+							new Object[] { req.new_passwrod, user_key, token, user.user_id });
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_NOT_EXITS;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static EditPasswordResEntity editPassword(String username, String old_passwrod, String newPassword)
+			throws SQLException {
+		EditPasswordResEntity res = new EditPasswordResEntity();
+		String user_key = DESUtils.createKey();
+		String token = IdUtils.createId(username);
+		String sql = "update userinfo set login_password=?, user_key=?,token=?,login_time=? where phone_number=? and login_password=?";
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			int row = DBUtils.executeUpdate(conn, sql,
+					new Object[] { newPassword, user_key, token, System.currentTimeMillis(), username, old_passwrod });
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+				res.key = user_key;
+				res.token = token;
+			} else {
+				res.status = Config.STATUS_PASSWORD_ERROR;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static GetFriendCountsResEntity getFriendCounts(GetFriendCountsReqEntity req) throws SQLException {
+		GetFriendCountsResEntity res = new GetFriendCountsResEntity();
+
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			User user = getUserByToken(conn, req.token);
+			if (user == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			String sql = "SELECT count(user_id) as count FROM `userinfo` where invite_user=?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setObject(1, user.user_id);
+			rs = pstat.executeQuery();
+			if (rs.next()) {
+				res.counts = rs.getInt("count");
+			}
+			res.status = Config.STATUS_OK;
+			return res;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+	}
+
+	public static FindTradePassResEntity findTradePassword(FindTradePassReqEntity req) throws SQLException {
+		FindTradePassResEntity res = new FindTradePassResEntity();
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			User user = getUserByToken(conn, req.token);
+			if (user == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (StringUtils.emptyString(user.phone_number)) {
+				res.status = Config.STATUS_NOT_BIND_PHONE;
+				return res;
+			}
+
+			DBUtils.beginTransaction(conn);
+			int row = 0;
+			try {
+				if (!VerifyCodeDao.checkVerifyCode(conn, user.phone_number, req.verify_code)) {
+					res.status = Config.STATUS_VERIFY_CODE_ERROR;
+				} else {
+					String sql = "update userinfo set trade_password=? where user_id=?";
+					row = DBUtils.executeUpdate(conn, sql, new Object[] { req.trade_password, user.user_id });
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_SERVER_ERROR;
+			}
+
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	public static SetTradePassResEntity setTradePassword(SetTradePassReqEntity req) throws SQLException {
+		SetTradePassResEntity res = new SetTradePassResEntity();
+		DBUtils.ConnectionCache conn = null;
+		try {
+			conn = DBUtils.getConnection();
+			User user = getUserByToken(conn, req.token);
+			if (user == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (StringUtils.emptyString(user.phone_number)) {
+				res.status = Config.STATUS_NOT_BIND_PHONE;
+				return res;
+			}
+			DBUtils.beginTransaction(conn);
+			int row = 0;
+			try {
+				if (!VerifyCodeDao.checkVerifyCode(conn, user.phone_number, req.verify_code)) {
+					res.status = Config.STATUS_VERIFY_CODE_ERROR;
+				} else {
+					String sql = "update userinfo set trade_password=? where user_id=? ";
+					row = DBUtils.executeUpdate(conn, sql, new Object[] { req.trade_password, user.user_id });
+					if (row > 0) {
+						DBUtils.commitTransaction(conn);
+					}
+				}
+			} catch (Exception e) {
+				LogUtils.log(e);
+				row = 0;
+			}
+			if (row > 0) {
+				res.status = Config.STATUS_OK;
+			} else {
+				DBUtils.rollbackTransaction(conn);
+				if (StringUtils.emptyString(res.status))
+					res.status = Config.STATUS_SERVER_ERROR;
+			}
+			return res;
+		} finally {
+			DBUtils.close(conn);
+		}
+	}
+
+	/**
+	 * 更新用户邀请人
+	 * 
+	 * @param conn
+	 * @param user_id
+	 * @param inviteUserID
+	 * @return
+	 * @throws SQLException
+	 */
+	public static int updateInviteUser(DBUtils.ConnectionCache conn, String user_id, String inviteUserID)
+			throws SQLException {
+		String sql = "UPDATE userinfo SET invite_user=? WHERE user_id=? and (invite_user is null or invite_user = '')";
+		return DBUtils.executeUpdate(conn, sql, new Object[] { inviteUserID, user_id });
+	}
+
+	/**
+	 * 更新用户邀请奖励红包数
+	 * 
+	 * @param conn
+	 * @param user_id
+	 * @param redpacketcount
+	 * @return
+	 * @throws SQLException
+	 */
+	public static int updateRedPacketCount(DBUtils.ConnectionCache conn, String user_id, int redpacketcount)
+			throws SQLException {
+		StringBuffer sql = new StringBuffer("UPDATE userinfo SET red_packet_count=red_packet_count+? WHERE user_id=?");
+		if (redpacketcount < 0)
+			sql.append(" and red_packet_count>0");
+		return DBUtils.executeUpdate(conn, sql.toString(), new Object[] { redpacketcount, user_id });
+	}
+
+	/**
+	 * 获取所有用户数及用户金额
+	 * 
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static HomepageGraphInfo getUsersInfomation(DBUtils.ConnectionCache conn) throws SQLException {
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		HomepageGraphInfo info = null;
+		try {
+			StringBuffer sb = new StringBuffer("select sum(gold) sum,count(user_id) count from userinfo");
+			pstat = conn.prepareStatement(sb.toString());
+			rs = pstat.executeQuery();
+			if (rs.next()) {
+				info = new HomepageGraphInfo();
+				info.date_str = rs.getString("count");
+				info.gold = rs.getFloat("sum");
+			}
+			return info;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+		}
+	}
+
+	public static AdminGetUsersResEntity adminGetUsers(AdminGetUsersReqEntity req, HttpServletRequest request,
+			String token) throws Exception {
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		AdminGetUsersResEntity res = new AdminGetUsersResEntity();
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo mAdminInfo = AdminDao.getAdminByToken(conn, token);
+			if (mAdminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!mAdminInfo.hasMode(AdminConfig.MODE_MANAGER_USER)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			StringBuffer sql = new StringBuffer(
+					"select u.close_time,u.user_name,u.status,u.user_id,u.third_login,u.nickname,u.gold,u1.nickname invite_user_name,u.phone_number,u.address,u.login_time from userinfo u LEFT JOIN userinfo u1 on u.invite_user = u1.user_id");
+			if (!StringUtils.emptyString(req.key_word)) {
+				sql.append(" where u.nickname like ? ");
+				sql.append(" or u1.nickname like ? ");
+				sql.append(" or u.user_name like ? ");
+			}
+			sql.append(" order by u.login_time desc limit ?,?");
+			pstat = conn.prepareStatement(sql.toString());
+			req.begin = req.begin < 0 ? 0 : req.begin;
+			if (!StringUtils.emptyString(req.key_word)) {
+				pstat.setObject(1, "%" + req.key_word + "%");
+				pstat.setObject(2, "%" + req.key_word + "%");
+				pstat.setObject(3, "%" + req.key_word + "%");
+				pstat.setObject(4, req.begin);
+				if (req.count > 0) {
+					pstat.setObject(5, req.count);
+				} else {
+					pstat.setObject(5, Config.ONCE_QUERY_COUNT);
+				}
+			} else {
+				pstat.setObject(1, req.begin);
+				if (req.count > 0) {
+					pstat.setObject(2, req.count);
+				} else {
+					pstat.setObject(2, Config.ONCE_QUERY_COUNT);
+				}
+			}
+			rs = pstat.executeQuery();
+			AdminGetUsersResEntity.User user = null;
+			List<AdminGetUsersResEntity.User> users = new ArrayList<AdminGetUsersResEntity.User>();
+			while (rs.next()) {
+				user = new AdminGetUsersResEntity.User();
+				user.user_id = rs.getString("user_id");
+				user.user_name = rs.getString("user_name");
+				user.third_login = rs.getInt("third_login");
+				user.nickname = rs.getString("nickname");
+				user.gold = rs.getFloat("gold");
+				user.invite_user_name = rs.getString("invite_user_name");
+				user.phone_number = rs.getString("phone_number");
+				user.address = rs.getString("address");
+				user.login_time = rs.getLong("login_time");
+				user.status = rs.getInt("status");
+				user.close_time = rs.getLong("close_time");
+				users.add(user);
+			}
+			res.users = users;
+			boolean has_more_data = true;
+			if (req.count > 0) {
+				has_more_data = res.users.size() == req.count;
+			} else {
+				has_more_data = res.users.size() == Config.ONCE_QUERY_COUNT;
+			}
+			res.has_more_data = has_more_data;
+			res.status = Config.STATUS_OK;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+		return res;
+	}
+
+	public static AdminUsersInfoResEntity adminGetUserInfo(AdminUsersInfoReqEntity req, HttpServletRequest request,
+			String token) throws Exception {
+		AdminUsersInfoResEntity res = new AdminUsersInfoResEntity();
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo mAdminInfo = AdminDao.getAdminByToken(conn, token);
+			if (mAdminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!mAdminInfo.hasMode(AdminConfig.MODE_MANAGER_USER)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			User user = getUser(conn, req.user_id);
+			if (user == null) {
+				res.status = Config.STATUS_NOT_EXITS;
+				return res;
+			}
+			StringBuffer sb = new StringBuffer();
+			sb.append(
+					" SELECT u.registration_time,u.user_name,u.user_id,u.nickname,u.gold,u.phone_number,i.id_num,i.photos FROM userinfo u LEFT JOIN identification i on i.user_id=u.user_id");
+			sb.append(" where u.user_id=?");
+			pstat = conn.prepareStatement(sb.toString());
+			pstat.setObject(1, req.user_id);
+			rs = pstat.executeQuery();
+			if (rs.next()) {
+				res.user_id = rs.getString("user_id");
+				res.user_name = rs.getString("user_name");
+				res.nickname = rs.getString("nickname");
+				res.gold = rs.getFloat("gold");
+				res.phone_number = rs.getString("phone_number");
+				res.id_num = rs.getString("id_num");
+				if (!StringUtils.emptyString(rs.getString("photos"))) {
+					List<String> photos = JSON.parseArray(rs.getString("photos"), String.class);
+					for (int i = 0; i < photos.size(); i++) {
+						photos.set(i, ImageHelper.getImageUrl(request, photos.get(i)));
+					}
+					res.photos = photos;
+				}
+				res.registration_time = rs.getLong("registration_time");
+				res.status = Config.STATUS_OK;
+			} else {
+				res.status = Config.STATUS_NOT_EXITS;
+			}
+			return res;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+	}
+	
+	public static AdminEditUserResEntity adminChangeUserStatus(AdminEditUserReqEntity req,String token) throws Exception {
+		AdminEditUserResEntity res = new AdminEditUserResEntity();
+		DBUtils.ConnectionCache conn = null;
+		PreparedStatementCache pstat = null;
+		ResultSet rs = null;
+		try {
+			conn = DBUtils.getConnection();
+			AdminInfo mAdminInfo = AdminDao.getAdminByToken(conn, token);
+			if (mAdminInfo == null) {
+				res.status = Config.STATUS_TOKEN_ERROR;
+				return res;
+			}
+			if (!mAdminInfo.hasMode(AdminConfig.MODE_MANAGER_USER)) {
+				res.status = Config.STATUS_PERMISSION_ERROR;
+				return res;
+			}
+			User user = getUser(conn, req.user_id);
+			if (user == null) {
+				res.status = Config.STATUS_NOT_EXITS;
+				return res;
+			}
+			StringBuffer sql = new StringBuffer("UPDATE userinfo SET ");
+			if(req.type==1){
+				sql.append("status=").append(USER_STATUS_DISABLE);
+			}else if(req.type==2){
+				long time=System.currentTimeMillis();
+				time=time+(DateUtil.DAY_TIME*req.close_time);
+				sql.append("status=").append(USER_STATUS_BANNED);
+				sql.append(",close_time=").append(time);
+			}else if(req.type==3){
+				sql.append("status=").append(USER_STATUS_NORMAL);
+				sql.append(",close_time=").append(0);
+			}
+			sql.append(" WHERE user_id=?");
+			DBUtils.executeUpdate(conn, sql.toString(), new Object[] { req.user_id });
+			res.status = Config.STATUS_OK;
+			return res;
+		} finally {
+			DBUtils.close(rs);
+			DBUtils.close(pstat);
+			DBUtils.close(conn);
+		}
+	}
+}

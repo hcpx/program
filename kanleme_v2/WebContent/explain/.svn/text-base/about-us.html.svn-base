@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关于我们</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="images/logo.ico" rel="shortcut icon">
+
+    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        h2 {
+            color: #D0D0D0;
+            font-size: 16px;
+            margin-top: 30px;
+        }
+
+        p {
+            padding-left: 12px;
+            padding-right: 8px;
+            line-height: 25px;
+            font-family: 'Microsoft Yahei', 'Simsun';
+        }
+
+        p {
+            text-indent: 2em;
+            font-size: 16px;
+        }
+
+        .eqcode {
+            width: 150px;
+            height: 150px;
+            margin-top: 40px;
+        }
+
+        .desc {
+            margin-top: 30px;
+            color: #818181;
+        }
+
+        h4 {
+            color: #DAD6D6;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="full-container">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <img class="eqcode" src="images/klmysh.jpg"/>
+            <h2>扫描关注公众号</h2>
+        </div>
+        <div class="col-md-12 desc">
+            <p>“看了么”是一款基于LBS地理定位，结合威客、大数据精准营销的移动互联网应用。</p>
+            <p>“看了么”专注O2O领域，对于线下商家来说，她既是一个互联网大数据精准营销平台，也是线下商家弥补信息不对称，对抗咄咄逼人的电商平台的有力武器。</p>
+            <p>对于用户来说，他是一个手机赚钱平台。小伙伴们通过完成看了么平台上入驻商家发布的小任务获得现金报酬。要是刷得勤，每天都可以拿到30-50元的收入，而且看了么每天会更新不同任务，这样用户每天都能赚到钱。</p>
+            <p>对于入驻商家来说，他是一个移动互联网大数据精准营销平台，通过发布有偿任务的方式达到店铺引流，提高曝光的效果。</p>
+        </div>
+
+    </div>
+</div>
+<h4>四川国立创投科技有限公司</h4>
+</body>
+</html>

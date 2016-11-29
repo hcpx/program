@@ -1,0 +1,113 @@
+html {
+    overflow-y: hidden;
+}
+
+.left {
+    width: 265px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #2f4050;
+}
+
+.right {
+    width: 800px;
+    position: absolute;
+    top: 0;
+    left: 265px;
+    background: #F4F8FB;
+}
+
+.left h4 {
+    font-size: 22px;
+    text-align: left;
+    padding-left: 25px;
+    color: #fff;
+    font-weight: initial;
+    height: 80px;
+    line-height: 80px;
+    background:#20bfa1;
+}
+
+.side_nav_directly_li {
+    width: 240px;
+    height: 60px;
+    line-height: 60px;
+    padding-left: 25px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.nav_child_menu {
+    display: none;
+}
+
+#side_nav li.hover {
+    width: 100%;
+    color: #20bfa1;
+    background: #293846;
+    padding-left: 0px;
+    height: auto;
+    border-left:4px solid #20bfa1;
+}
+
+#side_nav li.hover div{
+    padding-left: 21px;
+    border-bottom: 1px solid #293846;
+}
+
+#side_nav li.hover .nav_child_menu{
+    display: block;
+    
+}
+
+#side_nav li.hover .nav_child_menu li{
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
+    border-bottom: 1px solid #2B3238;
+    
+}
+
+#side_nav{ margin-top:30px;}
+#side_nav li.hover .nav_child_menu li.focus{
+    color: #20bfa1;
+}
+
+#side_nav li.hover .nav_child_menu li:hover{
+    color: #20bfa1;
+}
+
+#side_nav li:hover
+{
+    color: #20bfa1;
+}
+
+#side_nav li.focus
+{
+    color: #20bfa1;
+}
+
+.right .top{
+    height: 60px;
+    background: #EDEFF0;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.right a{
+    color: #56BBFC;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+}
+
+#main{
+    height: 100%;
+    border: none;
+}

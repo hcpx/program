@@ -1,0 +1,38 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*公共样式*/
+*{ margin: 0; padding: 0;}
+html{}
+body{ overflow-x: hidden;min-width:320px; max-width: 640px; margin: 0 auto; font-family: '宋体'; color: #000; font-size:12px;}
+input,button{outline: none; background:none; border:none;}
+textarea{outline: none; background:none;}
+button{border:none;}
+img{border: 0;}
+ul,li{list-style: none;}
+a{ color:#000;}
+a,a:active,a:link,a:visited,a:focus,a:hover{text-decoration: none;}
+.clearfix:after{content: "";width: 0;height: 0;clear: both;display: block;visibility: hidden;}
+.clearfix{zoom: 1;}
+.CL{clear:both; height:0px; overflow:hidden;}
+.fl{float: left;}
+.fr{float: right;}
+button{ padding:0; margin:0;}
+div,p,.content{}
+h1,h2{ font-size:14px; font-weight:bold;}
+
+/*专题子页面*/
+.su_top{ width:100%; height:auto;}
+.su_top_ba{ width:100%; height:auto; margin-bottom:20px;}
+.su_topul{ width:94%; margin:0 auto; margin-bottom:20px;}
+.su_topul li{ font-size:14px; color:#333; line-height:22px; margin-bottom:7px;}
+.su_con{ width:94%; margin:0 auto;padding-bottom:20px;}
+.su_con li{ width:100%; height:auto;}
+.su_con li img{ width:100%; margin-bottom:12px;}
+.su_con li p{ width:100%; font-size:14px; color:#333; line-height:22px; margin-bottom:7px;}
+
+.shuju_jiazai{ width:100%; height:40px; line-height:40px; font-size:14px; text-align:center; background-color:rgba(0,0,0,0.6); color:#fff; position:absolute;top:100px; max-width:640px; border-radius:5px;}
+
+/*进入官网*/
+.liukong{ height:40px;}
+.liji_join{max-width:640px;position:fixed;bottom:0;display:block; width:100%;height:40px;background:#38d3b5; line-height:40px; text-align:center; font-size:16px; color:#fff;letter-spacing:1px; }

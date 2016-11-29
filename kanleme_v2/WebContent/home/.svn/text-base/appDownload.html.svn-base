@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="description" content="国立看了么是一个真实可靠的网络互助平台。看了么健康互助计划是由看了么公益基金发起的，为弱势群体定制的专属保障方案。在这里，人们守望互助，共同抵御重大疾病、癌症的风险。" />
+<meta name="keywords" content="看了么官网,国立看了么,看了么，国立看了么，健康互助，网络互助,互助平台,互助组织" />
+<title>国立看了么</title>
+<link href="css/kanleme_web.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+<!--top-->
+<div class="top">
+	<div class="topc clearfix">
+    	<a href="../index.html" class="topc_logo fl">
+        	<img src="images/logo.png" />
+            <span>国立看了么</span>
+        </a>
+        <div class="fr topc_list">
+        	<a href="../index.html">首页</a>
+            <a href="healthHelp.jsp">健康互助</a>
+            <a class="active" href="appDownload.html">APP下载</a>
+            <a href="helpCentre.html">帮助中心</a>
+            <a href="contact.html">联系我们</a>
+        </div>
+    </div>
+</div>
+<!--app下载-->
+<div class="adlbr">
+	<img class="adlbrimg" src="images/app_downbg1_bg.png" />
+	<div class="adlbrc clearfix">
+    	<div class="adlbrcz fl">
+        	<img src="images/app_downbg1_01.png" />
+        </div>
+        <div class="adlbrcy fr">
+        	<img class="adlbrcy1" src="images/app_downbg1_02.png" />
+            <img class="adlbrcy2" src="images/app_downbg1_03.png" />
+            <div class="adlbrcy_wei">
+                <a class="adlbrcy_wei1" href="javascript:;"><img src="images/app_downbg1_04.png" /></a>
+                <a class="adlbrcy_wei2" href="javascript:;"><img src="images/app_downbg1_05.png" /></a>
+            </div>
+            <div class="adlbrcy_weiimg">
+                <a href="javascript:;"><img class="adlbrcy_weiimg1" src="images/app_code.png" /></a>
+                <a href="javascript:;" style="margin-left:5px;"><img class="adlbrcy_weiimg2" src="images/ios_code.png" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--第二部分-->
+<div class="apart2">
+	<div class="apart2c clearfix">
+    	<div class="apart2cz fl">
+        	<h1 class="apart2cz1">健康互助</h1>
+            <h2 class="apart2cz2">HEALTH ASSISTANCE</h2>
+            <span class="apart2cz3"></span>
+            <p class="apart2cz4">看了么健康互助计划是由看了么公益基金发起的，为弱势群体和公益人定制的专属保障计划，基于国立看了么APP的网络互助新模式，只要预存9元即可加入健康互助计划，一旦某位成员罹患约定的60种重疾，即可享受最高30万健康互助基金。30万健康互助基金由全体会员均摊，加入的人越多，每人分摊得越少。10万人加入，每人仅需分摊3元；100万人加入，每人仅需分摊0.3元。</p>
+            <p class="apart2cz5">9元投入  30万大病保障</p>
+        </div>
+        <div class="apart2cy fr">
+        	<img src="images/app_downbg2_01.png" />
+        </div>
+    </div>
+</div>
+<!--第三部分-->
+<div class="apart3">
+	<div class="apart3c clearfix">
+    	<div class="apart3cz fl">
+        	<img src="images/app_downbg3_01.png" />
+        </div>
+        <div class="apart3cy fr">
+        	<h1 class="apart2cz1_c">抢红包</h1>
+            <h2 class="apart2cz2_c">WITH ACTION AND LOVE</h2>
+            <span class="apart2cz3_c"></span>
+            <p class="apart2cz4_c">国立看了么APP上众多热心公益的企业将不定期发放红包，点开发现-抢红包，关注企业公众号获取红包口令即可领取。红包可以支援公益项目也可以加入看了么健康互助计划，当然你也可以提现。</p>
+            <p class="apart2cz5_c">用行动 与爱前行</p>
+        </div>
+    </div>
+</div>
+<!--第四部分-->
+<div class="apart4">
+	<div class="apart4c clearfix">
+    	<div class="apart4cz fl">
+        	<h1 class="apart2cz1_c">看友圈</h1>
+            <h2 class="apart2cz2_c">FRIENDS CIRCLE</h2>
+            <span class="apart2cz3_c"></span>
+            <p class="apart2cz4_c" style="margin-left:0;">看友圈公益项目主要聚焦于：疾病救助、儿童救助、教育救助和动物救助等方面，捐助是做公益，参加志愿者是做公益，转发一下也是做公益，每个人都能通过自己的微小努力帮助他人，在这个互联网时代里让大家随时随地都能做公益，让公益成为一种习惯。</p>
+             <p class="apart2cz5_c">行之所至  为爱分享</p>
+        </div>
+        <div class="apart4cy fr">
+        	<img src="images/app_downbg4_01.png" />
+        </div>
+    </div>
+</div>
+<!--第五部分-->
+<div class="apart5">
+	<div class="apart5c clearfix">
+    	<div class="apart5cr fr">
+        	<img class="apart5cr1" src="images/banner_img00.png" />
+            <img class="apart5cr2" src="images/banner_img01.png" />
+            <div class="adlbrcy_weic">
+                <a class="adlbrcy_weic1" href="javascript:;"><img src="images/app_downbg5_01.png" /></a>
+                <a class="adlbrcy_weic2" href="javascript:;"><img src="images/app_downbg5_02.png" /></a>
+            </div>
+            <div class="adlbrcy_weicimg">
+                <a href="javascript:;"><img class="adlbrcy_weicimg1" src="images/app_code.png" /></a>
+                <a href="javascript:;"><img class="adlbrcy_weicimg2" src="images/ios_code.png" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--联系我们-->
+<div class="conta">
+	<div class="contac">
+    	<div class="repoc_top">
+            <h1 class="repoc_toph1">联系我们</h1>
+            <p class="repoc_topp">MEDIA COVERAGE</p>
+            <span class="repoc_tops"></span>
+        </div>
+        <div class="contacul_wrap">
+        <ul class="contacul clearfix">
+        	<li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="images/con_01.png" />
+                <p class="contaculp1">公司地址</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">成都市武侯区小天竺街75号财富国际16F</p>
+            </li>
+            <li class="fl" style="margin-right:1%;">
+            	<img class="contaculimg" src="images/con_02.png" />
+                <p class="contaculp1">联系方式</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">028-85590791(周一至周日9:00—17:30)</p>
+            </li>
+            <li class="fr">
+            	<img class="contaculimg" src="images/con_03.png" />
+                <p class="contaculp1">电子邮件</p>
+                <span class="contaculs"></span>
+                <p class="contaculp2">2597420394@qq.com</p>
+            </li>
+        </ul>
+        </div>
+    </div>
+</div>
+<!--foot-->
+<div class="foot">
+	<div class="footc clearfix">
+    	<ul class="footclist clearfix fl">
+        	<li class="fl">
+            	<h1>关于看了么</h1>
+                <a href="../index.html">国立看了么介绍</a>
+                <a href="healthHelp.jsp">健康互助</a>
+            </li>
+            <li class="fl">
+            	<h1>用户服务</h1>
+                <a href="helpCentre.html">帮助中心</a>
+                <a href="member_action_term.html">会员公约</a>
+                <a href="secret_term.html">隐私条款</a>
+            </li>
+            <li class="fl">
+            	<h1>关注我们</h1>
+                <a target="_blank" href="http://weibo.com/scchuangtou?refer_flag=1001030102_&is_hot=1">新浪微博</a>
+                <a href="showProjectState.html">项目动态</a>
+            </li>
+        </ul>
+        <ul class="footclist2 fr">
+        	<li class="fl">
+            	<img src="images/life_code.jpg" />
+                <span>看了么优生活<br />(订阅号)</span>
+            </li>
+            <li class="fl">
+            	<img src="images/wei_code.jpg" />
+                <span>看了么公益<br />(服务号)</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--bottom-->
+<div class="bottom">
+<p>Copyright © 2016-2026 guolichuangtou. All Rights Resreved.</p>
+</div>
+<a class="back-to-top"><img src="images/ic_top.png" /></a>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

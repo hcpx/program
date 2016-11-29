@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*公共样式*/
+*{ margin: 0; padding: 0;}
+html{}
+body{ overflow-x: hidden;min-width:320px; max-width: 640px; margin: 0 auto; font-family: '宋体'; color: #000; font-size:12px;}
+input,button{outline: none; background:none; border:none;}
+textarea{outline: none; background:none;}
+button{border:none;}
+img{border: 0;}
+ul,li{list-style: none;}
+a{ color:#000;}
+a,a:active,a:link,a:visited,a:focus,a:hover{text-decoration: none;}
+.clearfix:after{content: "";width: 0;height: 0;clear: both;display: block;visibility: hidden;}
+.clearfix{zoom: 1;}
+.CL{clear:both; height:0px; overflow:hidden;}
+.fl{float: left;}
+.fr{float: right;}
+button{ padding:0; margin:0;}
+div,p,.content{}
+h1,h2{ font-size:14px; font-weight:bold;}
+
+/*帮助页*/
+.help_wrap{ width:100%; height:auto; background:url(../images/ic_background.png) no-repeat 0 0; background-size:100% 100%;}
+.help_title{ width:94%; margin:0 auto; padding:15px 0; border-bottom:1px solid #a2ffed;}
+.help_title h1{ height:18px; padding-left:5px; border-left:4px #fff solid; font-size:16px; letter-spacing:1px; color:#fff;}
+.yhn3 {width: 100%;height: auto;}
+.yhn3_h1{height: 20px;width: 94%; margin:0 auto;border-bottom: 1px solid #a2ffed;line-height: 20px; letter-spacing:1px;font-size: 16px; color:#fff; padding:15px 0;}
+.yhn3_h1 span{font-size: 16px; padding-left:6px; display:inline-block; height:20px; border-left:4px solid #fff;}
+.yhn3_list {width: 94%;margin: 0 auto;height: auto;padding-bottom: 10px;}
+.yhn3_listli {width: 100%;height: auto;}
+.yhn3_listlid1 {height: 40px; width: 100%;border-bottom: 1px solid #a2ffed;}
+.yhn3_listlid1s {font-size: 14px; display: block;height: 40px; line-height: 40px;color: #fff;}
+.yhn3_listlid2 { width: 96%;padding: 15px 2%;background: #38d3b5; display: none;}
+.yhn3_listlid2 p {color: #fff;font-size: 12px; margin-bottom: 5px;line-height: 18px;letter-spacing: 1px;}
+.yhn3_listlid1d span {display: inline-block;height: 40px;line-height: 40px;font-size: 14px;color: #333;}
+.yhn3_listlid1d img {display: inline-block;margin-left: 15px; height: 20px; width: 20px;margin-top: 10px;}
+.help_bt{ width:100%; text-align:center; margin-top:20px; padding:20px 0;}
+.help_bt1{margin-bottom:11px;}
+.help_bt1s1{ font-size:22px; letter-spacing:1px; color:#000; margin-right:4px;}
+.help_bt1s2{ font-size:25px; color:#38d3b5;}
+.help_bt2{ color:#999; font-size:12px;}
+
+.table-c{ width:90%; margin:5px auto;}
+.table-c table{border-right:1px solid #fff;border-bottom:1px solid #fff}
+.table-c table td{border-left:1px solid #fff;border-top:1px solid #fff; padding:5px; color:#fff; line-height:20px;}

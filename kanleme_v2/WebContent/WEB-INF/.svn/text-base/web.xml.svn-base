@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<display-name>testzhongyi</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<listener>
+		<listener-class>com.scchuangtou.servlet.MainServletContextListener</listener-class>
+	</listener>
+
+	<!-- 图片获取 -->
+	<servlet>
+		<display-name>image_get</display-name>
+		<servlet-name>image_get</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.GetImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>image_get</servlet-name>
+		<url-pattern>/image_get</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 图形验证码 -->
+	<servlet>
+		<display-name>imagecode</display-name>
+		<servlet-name>imagecode</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.ImageVerifyCodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>imagecode</servlet-name>
+		<url-pattern>/imagecode</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- 退出登录 -->
+	<servlet>
+		<display-name>logout</display-name>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.LogOutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
+
+	<!-- 财务后台 -->
+	<servlet>
+		<display-name>financialapi</display-name>
+		<servlet-name>financialapi</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.FinancialServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>financialapi</servlet-name>
+		<url-pattern>/financialapi</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>financialfilter</filter-name>
+		<filter-class>com.scchuangtou.filter.FinancialFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>financialfilter</filter-name>
+		<url-pattern>/financial/*</url-pattern>
+	</filter-mapping>
+	<!-- 财务后台配置完毕 -->
+
+	<!-- 管理后台 -->
+	<servlet>
+		<display-name>adminapi</display-name>
+		<servlet-name>adminapi</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.AdminServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>adminapi</servlet-name>
+		<url-pattern>/adminapi</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>adminfilter</filter-name>
+		<filter-class>com.scchuangtou.filter.AdminFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>adminfilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+	<!-- 管理后台配置完毕 -->
+
+	<!-- 接口 -->
+	<servlet>
+		<display-name>api</display-name>
+		<servlet-name>api</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.ApiServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>api</servlet-name>
+		<url-pattern>/api</url-pattern>
+	</servlet-mapping>
+	<!-- 接口配置完毕 -->
+
+	<!-- 支付宝异步通知 -->
+	<servlet>
+		<servlet-name>AliPayServlet</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.AliPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AliPayServlet</servlet-name>
+		<url-pattern>/alipay/notify</url-pattern>
+	</servlet-mapping>
+	<!-- 支付宝异步通知配置完毕 -->
+
+	<!-- 微信异步通知 -->
+	<servlet>
+		<servlet-name>WeChatPayServlet</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.WeChatPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WeChatPayServlet</servlet-name>
+		<url-pattern>/wechat/notify</url-pattern>
+	</servlet-mapping>
+	<!-- 微信异步通知配置完毕 -->
+
+	<!-- 银联异步通知 -->
+	<servlet>
+		<servlet-name>UnionServlet</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.UnionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UnionServlet</servlet-name>
+		<url-pattern>/union/notify</url-pattern>
+	</servlet-mapping>
+	<!-- 银联异步通知配置完毕 -->
+
+	<!-- 主页下载二维码 -->
+	<servlet>
+		<servlet-name>CodeService</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.QRCodeEncoder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CodeService</servlet-name>
+		<url-pattern>/qrcode</url-pattern>
+	</servlet-mapping>
+	<!-- 主页下载二维码配置完毕 -->
+	
+	<!-- 积分墙异步通知 -->
+	<servlet>
+		<servlet-name>IntegralWallServlet</servlet-name>
+		<servlet-class>com.scchuangtou.servlet.IntegralWallServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IntegralWallServlet</servlet-name>
+		<url-pattern>/integralwall/notify</url-pattern>
+	</servlet-mapping>
+	<!-- 积分墙异步通知配置完毕 -->
+</web-app>

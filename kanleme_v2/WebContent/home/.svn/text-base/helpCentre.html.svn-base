@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="description" content="国立看了么是一个真实可靠的网络互助平台。看了么健康互助计划是由看了么公益基金发起的，为弱势群体定制的专属保障方案。在这里，人们守望互助，共同抵御重大疾病、癌症的风险。" />
+<meta name="keywords" content="看了么官网,国立看了么,看了么，国立看了么，健康互助，网络互助,互助平台,互助组织" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<title>国立看了么</title>
+<link href="css/kanleme_web.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+<!--top-->
+<div class="top">
+	<div class="topc clearfix">
+    	<a href="../index.html" class="topc_logo fl">
+        	<img src="images/logo.png" />
+            <span>国立看了么</span>
+        </a>
+        <div class="fr topc_list">
+        	<a href="../index.html">首页</a>
+            <a href="healthHelp.jsp">健康互助</a>
+            <a href="appDownload.html">APP下载</a>
+            <a class="active" href="helpCentre.html">帮助中心</a>
+            <a href="contact.html">联系我们</a>
+        </div>
+    </div>
+</div>
+<!--中间内容-->
+<div class="hc">
+	<div class="hcc clearfix">
+    	<div class="hccz fl">
+        	<h1 class="hcczh1"><span>热门问题</span></h1>
+            <ul class="hcczlist">
+            	<li class="active"><a href="javascript:;">01、什么是健康互助？</a></li>
+                <li><a href="javascript:;">02、国立看了么互助计划是真实的吗？</a></li>
+                <li><a href="javascript:;">03、9元能保障多少时间？</a></li>
+                <li><a href="javascript:;">04、加入后是否有凭证？</a></li>
+                <li><a href="javascript:;">05、能否为他人加入？</a></li>
+                <li><a href="javascript:;">06、如何申请互助？</a></li>
+                <li><a href="javascript:;">07、能否保证得到30万互助金？</a></li>
+                <li><a href="javascript:;">08、每次事件最高均摊金额不超过3元？</a></li>
+                <li><a href="javascript:;">09、如何确保会员都会履行均摊义务？</a></li>
+                <li><a href="javascript:;">10、忘记充值，账户余额不足了怎么办？</a></li>
+                <li><a href="javascript:;">11、已有医保、商业保险，还可以加入吗？</a></li>
+            </ul>
+        </div>
+        <div class="hccy fr">
+            <!--1-->
+            <div class="hccyw hccy1">
+            	<h1 class="hccy1h1 hccyh1"><span>什么是健康互助？</span></h1>
+                <div class="hccyd1 hccyd">
+                	 <p>健康互助保障计划是基于用户自愿的基础上所开展的一种操作成本低廉、以互助互济、分散风险为目的的公益性计划。加入的互助者只需要预存9元费用经过180天的观察期后，即可获得高额的健康安全保障。</p>
+                </div>
+            </div>
+            <!--2-->
+            <div class="hccyw hccy2">
+            	<h1 class="hccy1h2 hccyh1"><span>国立看了么互助计划是真实的吗？</span></h1>
+                <div class="hccyd2 hccyd">
+                	 <p>国立看了么是和成都市慈善总会合作的互助计划，是由四川国立创投科技有限公司发起成立。为了保障资金安全，用户所缴纳的资金由成都市慈善总会进行监督使用。为了保证互助事件的真实性和公平性，会员发生互助事件后，所提交的材料由专业第三方公司进行审核和查勘，通过后将在平台进行公示，接受全体会员的监督。同时律师事务所和公证处也对我们进行法律与公正监督。 所以请放心，国立看了么健康互助计划是真实且合法的。</p>
+                </div>
+            </div>
+            <!--3-->
+            <div class="hccyw hccy3">
+            	<h1 class="hccy1h3 hccyh1"><span>9元能保障多少时间？</span></h1>
+                <div class="hccyd3 hccyd">
+                	 <p>您加入时所缴纳的9元并非是一次性支付，也不是按年或月缴纳的，而是预存到您国立看了么健康互助计划账户中的。</p>
+                     <p>如果有会员发生互助事件，申请互助金，那么其他会员将本着对每次事件最高捐助3元的规则来义务均摊互助金。每位会员应均摊的金额是从个人账户中扣除的（也就是从您缴纳的9元中）。</p>	
+                     <p>您后期要向账户中进行充值，以保证您的账户余额不低于3元，这样您就能在保障年龄范围内一直享受保障。当您的账户余额快到3元的警戒线时，我们会通过app推送消息，和手机短信提示您充值。</p>	
+                </div>
+            </div>
+            <!--4-->
+            <div class="hccyw hccy4">
+            	<h1 class="hccy1h4 hccyh1"><span>加入后是否有凭证？</span></h1>
+                <div class="hccyd4 hccyd">
+                	 <p>国立看了么是采用网络互助方式实现会员之间的相互保障，并非传统的商业保险，所以不需要保单。但加入后会有加入的电子凭证。请下载国立看了么app，点击我的'我的健康互助'页面中可以详细看到您的姓名，身份证号，加入时间，生效时间，账户余额等。</p>	
+                </div>
+            </div>
+            <!--5-->
+            <div class="hccyw hccy5">
+            	<h1 class="hccy1h5 hccyh1"><span>能否为他人加入？</span></h1>
+                <div class="hccyd5 hccyd">
+                	 <p>您可以在您的账号下为亲友加入互助计划，没有人数限制。但是您后期要对您账号下的所有计划进行管理和充值。</p>
+                </div>
+            </div>
+            <!--6-->
+            <div class="hccyw hccy6">
+            	<h1 class="hccy1h6 hccyh1"><span>如何申请互助？</span></h1>
+                <div class="hccyd6 hccyd">
+                	 <p>如果患病了，可按照以下流程申请互助：</p>
+                     <p>1.拨打客服电话028-85590791发起申请；</p>	
+                     <p>2.通过app平台发起申请；</p>	
+                     <p>3.第三方专业机构核实后，全平台公示；</p>	
+                     <p>4.公示通过无异议，成都市慈善总会从健康互助金中划款。</p>		
+                </div>
+            </div>
+            <!--7-->
+            <div class="hccyw hccy7">
+            	<h1 class="hccy1h7 hccyh1"><span>能否保证得到30万互助金？</span></h1>
+                <div class="hccyd7 hccyd">
+                	 <p>互助金额由国立看了么会员进行共同均摊，申请互助金会员最终领取到互助金额度，在：</p>
+                     <p>1. 互助金领取额度不超过健康互助计划所规定的最高互助金额。</p>
+                     <p>2. 每次互助事件其他每位国立看了么健康互助计划会员均摊捐助额度不超过3元的互助规则下，取决于该计划下会员的实时数量，加入计划的会员数越多，会员获得最高互助金额的可能性就越大，国立看了么并不对每次最终互助金额做出承诺。拿 "中青年健康互助" 举例说明，会员罹患重大疾病的最高互助金是30万，如果有1名会员申请此项互助金，按照会员实时人数数量分类，可以有下面三种不同的情况。</p>
+                     <div class="table-c">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="50%">会员总数</td>
+                            <td width="50%">5万人</td>
+                        </tr>
+                        <tr>
+                            <td>最高互助金额</td>
+                            <td>30万</td>
+                        </tr>
+                        <tr>
+                            <td>互助金计算</td>
+                            <td>3元×5万人=15万元</td>
+                        </tr>
+                        <tr>
+                            <td>均摊金额</td>
+                            <td>3元</td>
+                        </tr>
+                        <tr>
+                            <td>实际领取金额</td>
+                            <td>15万元</td>
+                        </tr>
+                        <tr>
+                            <td>会员总数</td>
+                            <td>10万人</td>
+                        </tr>
+                        <tr>
+                            <td>最高互助金额</td>
+                            <td>30万</td>
+                        </tr>
+                        <tr>
+                            <td>互助金计算</td>
+                            <td>3元×10万人=30万元</td>
+                        </tr>
+                        <tr>
+                            <td>均摊金额</td>
+                            <td>3元</td>
+                        </tr>
+                        <tr>
+                            <td>实际领取金额</td>
+                            <td>30万元</td>
+                        </tr>
+                        <tr>
+                            <td>会员总数</td>
+                            <td>100万人</td>
+                        </tr>
+                        <tr>
+                            <td>最高互助金额</td>
+                            <td>30万</td>
+                        </tr>
+                        <tr>
+                            <td>互助金计算</td>
+                            <td>0.3元×100万人=30万元</td>
+                        </tr>
+                        <tr>
+                            <td>均摊金额</td>
+                            <td>0.3元</td>
+                        </tr>
+                        <tr>
+                            <td>实际领取金额</td>
+                            <td>30万元</td>
+                        </tr>
+                    </table>
+                    </div>
+                    <p>由此看出，只有当会员人数大于10万人时，该互助金申请会员方可确认领取到计划规定的最高互助金额。因此参与会员越多，大家的保障越强。当会员人数达到100万人时，每位会员对每次互助事件的均摊金额仅为0.3元。会员数量越大，每次时间均摊金额越低。</p>
+                </div>
+            </div>
+            <!--8-->
+            <div class="hccyw hccy8">
+            	<h1 class="hccy1h8 hccyh1"><span>每次事件最高均摊金额不超过3元</span></h1>
+                <div class="hccyd8 hccyd">
+                	 <p>我们初衷是网络互助，聚沙成塔，3元钱对每个会员来讲都是很小的一笔开支。</p>	
+                     <p>以青年健康互助计划为例，只要计划达到10万名稳定充值会员，发生互助事件的会员就能得到30万元的互助金。随着会员数越来越多，每人每次均摊的金额就越少。</p>	
+                     <p>国立看了么会员在不知不觉中就为无数不幸的家庭提供了庇护。</p>	
+                </div>
+            </div>
+            <!--9-->
+            <div class="hccyw hccy9">
+            	<h1 class="hccy1h9 hccyh1"><span>如何确保会员都会履行均摊义务？</span></h1>
+                <div class="hccyd9 hccyd">
+                	 <p>国立看了么首先会要求健康互助会员在加入计划时最低充值9元，期间如果健康互助会员的账户余额不足，平台还会提醒其进行充值。</p>
+                     <p>每当有互助事件发生并且审核、公示通过后，平台将从健康互助会员充值账户上扣款，所有资金划转都有记录。如果健康互助会员未尽义务都会被实时清退。</p>		
+                </div>
+            </div>
+            <!--10-->
+            <div class="hccyw hccy10">
+            	<h1 class="hccy1h10 hccyh1"><span>忘记充值，账户余额不足了怎么办？</span></h1>
+                <div class="hccyd10 hccyd">
+                	 <p>平台会在互助事件公示时，计算每位健康互助会员须均摊的金额，如果您的账户余额即将不足，不能履行均摊义务，平台将通过国立看了么会员登记的各种联系方式发出提示，通知您进行充值。</p>
+                     <p>为了避免您多次充值的麻烦并保证您个人账户中有足够金额，同时也规避扣除互助事件中义务均摊金额后，您的账户余额低于健康互助规定的最低值，影响您的会员权益，建议您一次多充入一些金额（如100元）。</p>
+                     <p>如果您的账户余额低于健康互助规定的最低值，只要您在60天内补足余额，您的计划账户将恢复至原有状态（但在您账户余额低于规定的最低值期间发生的互助事件，无权申请互助金）。</p>	
+                     <p>如果您的账户余额低于健康互助规定的最低值超过60天再进行充值，则将视同新加入健康互助会员，重新计算180天观察期。</p>	
+                </div>
+            </div>
+            <!--11-->
+            <div class="hccyw hccy11">
+            	<h1 class="hccy1h11 hccyh1"><span>已有医保、商业保险，还可以加入吗？</span></h1>
+                <div class="hccyd11 hccyd">
+                	 <p>还是需要的。患病后，治疗费用18-30万元。加入互助，医保和商业保险之外，又多了一份保障。
+三者相同点和不同点如下：</p>
+					<div class="table-c">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="20%"></td>
+                        <td width="20%">相同点</td>
+                        <td width="60%">不同点</td>
+                    </tr>
+                    <tr>
+                        <td>医保</td>
+                        <td>提供保障√</td>
+                        <td>部分医药费不在报销范围</td>
+                    </tr>
+                    <tr>
+                        <td>商业保险</td>
+                        <td>提供保障√</td>
+                        <td>价格较高，每年1000~4000元</td>
+                    </tr>
+                    <tr>
+                        <td>看了么健康互助</td>
+                        <td>提供保障√</td>
+                        <td>性价比高，每年花费约150元，得最高30万元保障金<br />可与医保、商业保险叠加</td>
+                    </tr>
+                </table>
+                </div>	
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--foot-->
+<div class="foot">
+	<div class="footc clearfix">
+    	<ul class="footclist clearfix fl">
+        	<li class="fl">
+            	<h1>关于看了么</h1>
+                <a href="../index.html">国立看了么介绍</a>
+                <a href="healthHelp.jsp">健康互助</a>
+            </li>
+            <li class="fl">
+            	<h1>用户服务</h1>
+                <a href="helpCentre.html">帮助中心</a>
+                <a href="member_action_term.html">会员公约</a>
+                <a href="secret_term.html">隐私条款</a>
+            </li>
+            <li class="fl">
+            	<h1>关注我们</h1>
+                <a target="_blank" href="http://weibo.com/scchuangtou?refer_flag=1001030102_&is_hot=1">新浪微博</a>
+                <a href="showProjectState.html">项目动态</a>
+            </li>
+        </ul>
+        <ul class="footclist2 fr">
+        	<li class="fl">
+            	<img src="images/life_code.jpg" />
+                <span>看了么优生活<br />(订阅号)</span>
+            </li>
+            <li class="fl">
+            	<img src="images/wei_code.jpg" />
+                <span>看了么公益<br />(服务号)</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--bottom-->
+<div class="bottom">
+<p>Copyright © 2016-2026 guolichuangtou. All Rights Resreved.</p>
+</div>
+<a class="back-to-top"><img src="images/ic_top.png" /></a>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+</body>
+</html>

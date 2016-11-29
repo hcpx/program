@@ -1,0 +1,63 @@
+{
+  "menus": [
+  	{
+      "name": "主页",
+      "uri": "/admin/admin/homePage.jsp"
+    },
+    {
+      "name": "个人中心",
+      "child": [
+        {
+          "name": "资料修改",
+          "uri": "/admin/admin/editAdminInfo.jsp",
+          "level": 2
+        },
+        {
+          "name": "密码修改",
+          "uri": "/admin/admin/editAdminPassword.jsp",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "name": "用户管理",
+      "uri": "/admin/admin/userManage.jsp"
+    },
+    {
+      "name": "健康互助管理",
+      "uri": "/admin/admin/showHealthManage.jsp"
+    },
+    {
+      "name": "管理员管理",
+      "uri": "/admin/admin/adminManage.jsp"
+    },
+    {
+      "name": "帖子管理",
+      "uri": "/admin/admin/showArticlesNew.jsp"
+    },
+    {
+      "name": "圈子管理",
+      "uri": "/admin/admin/showCirclesNew.jsp"
+    },
+    {
+      "name": "专题管理",
+      "uri": "/admin/admin/showSubjectsNew.jsp"
+    },
+    {
+      "name": "认证管理",
+      "uri": "/admin/admin/showIdentifications.jsp"
+    },
+    {
+      "name": "公告管理",
+      "uri": "/admin/admin/showNotice.jsp"
+    },
+    {
+      "name": "Banner管理",
+      "uri": "/admin/admin/showBanners.jsp"
+    },
+    {
+      "name": "反馈信息",
+      "uri": "/admin/admin/showFeedback.jsp"
+    }
+  ]
+}

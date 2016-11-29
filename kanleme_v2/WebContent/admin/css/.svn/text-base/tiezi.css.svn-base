@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*帖子详情*/
+.td_warp{width: 550px;height: 700px;background: #fff; position: fixed;top: 50%;margin-top: -352px;left: 50%;
+margin-left: -275px;z-index: 9;border-top: 4px solid #eeeeee;overflow-y: scroll; display:none;}
+.td_top{ width:94%; padding:15px 3%; background:#fff;}
+.td_top1{ font-size:19px; color:#333; letter-spacing:1px; margin-bottom:10px;}
+.td_top2{line-height:20px; padding-bottom:10px; border-bottom:1px solid #eee;}
+.td_top2 img{ height:30px; width:30px; margin-right:3px; border-radius:50%;}
+.td_top2 span{ font-size:13px; color:#333; display:inline-block;}
+.td_top2z{ display:inline-block; width:50%; position:relative;}
+.td_top2zimg1{ height:30px; width:30px; margin-right:3px; vertical-align: middle; margin-top: 0px; position: absolute;top: 0; left: 0;}
+.td_top2zimg2{ height:30px; width:30px; margin-right:3px; vertical-align: middle; margin-top: 0px; position: absolute;top: 0; left: 0; z-index:99;}
+
+.td_top2z span{ display:inline-block; width:78%; margin-left:37px;}
+.td_top2y{}
+.td_top2ys1{ font-size:11px; color:#999; margin-right:8px;}
+.td_top2ys1 img{ margin-right:2px; height:22px; width:auto; vertical-align:middle; margin-top:-3px;}
+.td_top2ys2{ font-size:11px; color:#999;}
+.td_top2ys2 img{ margin-right:2px; height:22px; width:auto; vertical-align:middle; margin-top:-1px;}
+.td_top3{ width:100%; padding-top:17px; padding-bottom:10px; text-align:center;}
+.td_top3 li{ margin-right:15px; font-size:11px; color:#fa7789; margin-bottom:10px;}
+.td_top3 li img{ height:16px; width:auto; vertical-align:middle; margin-right:2px;}
+.td_top4{ width:100%; height:auto;}
+.td_top4 img{ width:100%; height:auto; margin-bottom:11px;}
+.td_top4 p{ font-size:14px; color:#333; line-height:22px; margin-bottom:11px;}
+.shuju_jiazai{ width:100%; height:40px; line-height:40px; font-size:14px; text-align:center; background-color:rgba(0,0,0,0.6); color:#fff; position:absolute;top:100px; max-width:640px; border-radius:5px;}
+.td_zhengwen{ width:100%; font-size:14px; color:#333; line-height:22px; margin-bottom:11px;}
+
+.imgholder{width:100%;background:#fff;margin:8px;font-size:12px;float:left;}
+.imgholder img{max-width:100%;background:#ccc;display:block;background:url(../images/loding.gif) no-repeat center;}

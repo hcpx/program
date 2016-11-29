@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<title>健康承诺告知</title>
+<link href="css/health.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="st_wrap">
+	<h1 class="st_wraph1">健康承诺告知</h1>
+    <ul class="st_wraplist">
+    	<li>
+            <p>本人自愿参加四川国立创投科技有限公司（国立看了么健康互助）开发经营的健康互助平台，在此向互助平台所有会员就本人在加入互助平台时的健康状况作如下四项承诺：</p>
+            <h1>一、过去三年内，本人确认未曾因疾病进行手术治疗，或连续住院≥15天，或服药≥3个月</h1>
+            <h1>二、本人确定目前或曾经未患有下列任一疾病：</h1>
+            <p>1.肿瘤(包括恶性肿瘤、脑部肿瘤、白血病，但已经确诊为良性息肉、囊肿、结节和赘生物且已治愈的除外)、原位癌及病理学描述为癌前病变的疾病等;</p>
+            <p>2. 心脏病(心功能2级以上)、冠心病(包括心绞痛、心肌梗死等类型)、高血压病(2级或2级以上)、脑血管疾病、主动脉疾病;</p>
+            <p>3. 糖尿病、甲亢(未治疗，症状严重)等慢性疾病;</p>
+            <p>4. 慢性阻塞性肺疾病、支气管哮喘(重度或重度以上);</p>
+            <p>5. 肝硬化;</p>
+            <p>6. 急慢性肾脏疾病;</p>
+            <p>7. 再生障碍性贫血;</p>
+            <p>8. 精神科疾病(含癫痫);</p>
+            <p>9. 特定传染病(鼠疫、霍乱、病毒性肝炎、痢疾、艾滋病、梅毒、流行性出血病、狂犬病、炭疽、黑热病、疟疾、登革热、人感染高致病禽流感、传染性非典型肺炎、甲型H1N1流感、MERS和埃博拉出血热);</p>
+            <p>10. 先天性疾病或者遗传性疾病;</p>
+            <p>11. 智力发育不全以及身体残障(含严重3度烧伤)。</p>
+			<h1>三、本人无药物滥用成瘾。</h1>
+			<h1>四、过去六个月内，本人未曾出现下列不明原因的症状或不适：</h1>
+			<p>体重减轻超过5公斤(非健身或减肥原因)、不明原因的出血点或瘀块、反复鼻或牙龈出血，身体出现肿块、包块、结节、咯血、呕血、便血、血尿、淋巴结肿大，经检查显示需要进一步的检查、治疗或随访</p>
+        	<p>如本人违反本承诺，则自愿放弃获得帮助；如造成损失的，愿意承担赔偿责任。</p>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
